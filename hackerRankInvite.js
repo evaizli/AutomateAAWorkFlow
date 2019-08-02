@@ -35,60 +35,54 @@ const password = require("./personal/password").hackerPassword;
 
   //candidate information
   const candidateEmail = "eva.li.pan@gmail.com";
-  const name = "Evan Fan";
-  const interviewType = "App Academy Technical Interview -" + name;
+  const candidateName = "Evan Fan";
+  const interviewType = "App Academy Technical Interview -" + candidateName;
 
   await page.waitFor(".tab-link");
   await page.goto("https://www.hackerrank.com/x/interviews/mypads");
   await page.waitFor(".js-new-interview");
   await page.click(".js-new-interview");
   await page.waitFor(".fw");
-  await page.$eval(".fw", el => (el.value = email));
-  await page.$eval(".fw", el => (el.value = name));
-
+  // add candidate info and email for the invite
   await page.evaluate(
-    (email, interviewType) => {
+    (candidateEmail, interviewType) => {
       let inputs = document.querySelectorAll(".fw");
       console.log("INPUTS", inputs);
-      inputs[0].value = email;
+      inputs[0].value = candidateEmail;
       inputs[1].value = interviewType;
       inputs[2].click();
-      // debugger
     },
-    email,
+    candidateEmail,
     interviewType
   );
+
+  //invite form
+
   await page.waitFor(".js-invite-participants");
   await page.click(".js-invite-participants");
 
-  await page.waitFor("candidate-container");
+  await page.waitFor("#interview-link");
+  const codePairLink = await page.evaluate(() => {
+    return document.getElementById("interview-link").href;
+  });
+  // open new page
+  const page2 = await browser.newPage();
+  await page2.setViewport({ width: 1280, height: 800 });
+  await page2.goto(codePairLink);
 
-  await page.evaluate(name => {
-    let container = document.getElementById("candidate-container");
-    container.children[0].value = name;
-    console.log(name);
-  }, name);
+  await page2.waitFor(".icon-menu-small");
+  await page2.evaluate(() => {
+    let sideBar = document.querySelector(".icon-menu-small.pull-right");
+    sideBar.click();
+  });
 
-  //   await page.waitFor("#title-container");
-  //   await page.click("#interview-link");
+  await page2.waitFor(".js-open-library");
 
-  //   await page.waitFor(".cp_sideHead");
-  //   await page.click(".js-open-library.btn.btn-green.block-center");
-
-  //
+  await page2.evaluate(() => {
+    let openPrompts = document.querySelector(".js-open-library");
+    openPrompts.click();
+  });
 
   await page.waitForNavigation();
-
-  // await page.type('#twotabsearchtextbox', 'nyan cat pullover')
-  // await page.click('input.nav-input')
-  // await page.waitForSelector('#resultsCol')
-  // await page.screenshot({ path: 'amazon_nyan_cat_pullovers_list.png' })
-  // await page.click('#pagnNextString')
-  // await page.waitForSelector('#resultsCol')
-  // const pullovers = await page.$$('a.a-link-normal.a-text-normal')
-  // await pullovers[2].click()
-  // await page.waitForSelector('#ppd')
-  // await page.screenshot({ path: screenshot })
-  // await browser.close()
-  // console.log('See screenshot: ' + screenshot)
+  await page2.waitForNavigation();
 })(email, password);
