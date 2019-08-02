@@ -1,14 +1,18 @@
 const puppeteer = require("puppeteer");
-const email = require("./personal/password").email;
-const password = require("./personal/password").password;
+const email = require("./personal/password").hackerEmail;
+const password = require("./personal/password").hackerPassword;
 (async (email, password) => {
   const browser = await puppeteer.launch({ headless: false });
   const page = await browser.newPage();
   await page.setViewport({ width: 1280, height: 800 });
+
+  //navigate to page
   await page.goto("https://www.hackerrank.com/work/login");
   await page.waitFor("#email");
   await page.waitFor("#password");
 
+  //log-in
+  //adding to the window
   await page.evaluate(
     (email, password) => {
       window.email = email;
@@ -21,6 +25,7 @@ const password = require("./personal/password").password;
   await page.$eval("#email", el => (el.value = window.email));
   await page.$eval("#password", el => (el.value = window.password));
 
+  // remnove credential from window
   await page.evaluate(() => {
     window.email = null;
     window.password = null;
@@ -28,6 +33,7 @@ const password = require("./personal/password").password;
 
   await page.click(".signupBtn");
 
+  //candidate information
   const candidateEmail = "eva.li.pan@gmail.com";
   const name = "Evan Fan";
   const interviewType = "App Academy Technical Interview -" + name;
@@ -54,17 +60,23 @@ const password = require("./personal/password").password;
   );
   await page.waitFor(".js-invite-participants");
   await page.click(".js-invite-participants");
-  await page.waitFor("#interview-link");
-  await page.click("#interview-link");
-  // const codePairEle = await page.evaluate(()=>{
-  //     let nodes = document.querySelectorAll(".tab-link");
-  //     console.log(nodes);
-  //     let codePair = nodes[1];
-  //     return codePair;
-  // })
-  // console.log(codePairEle);
 
-  // await page.click(codePairEle);
+  await page.waitFor("candidate-container");
+
+  await page.evaluate(name => {
+    let container = document.getElementById("candidate-container");
+    container.children[0].value = name;
+    console.log(name);
+  }, name);
+
+  //   await page.waitFor("#title-container");
+  //   await page.click("#interview-link");
+
+  //   await page.waitFor(".cp_sideHead");
+  //   await page.click(".js-open-library.btn.btn-green.block-center");
+
+  //
+
   await page.waitForNavigation();
 
   // await page.type('#twotabsearchtextbox', 'nyan cat pullover')
