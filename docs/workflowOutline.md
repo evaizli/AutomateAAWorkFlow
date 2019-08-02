@@ -1,8 +1,11 @@
 # a/A HiR Shift Work Flow
 
-###Setup:
+### Setup:
 1) Log-in to Google Calendar 
-2) Get candidate email from assigned shift calendar
+2) Get candidate information from assigned shift calendar
+    * Full Name 
+    * Email
+    * Interview Time
 3) Determine Interview Type 
     * T = Technical - Hacker Rank Process
     * NT = Non-technical - Zoom Meeting Invite Process
@@ -10,7 +13,7 @@
 5) Schedule Interview 
 
 
-###T - Technical Interview - Schedule Process
+### T - Technical Interview - Schedule Process
 1) Log-in to HackerRank (https://www.hackerrank.com/work/login?redirect=%2Fwork%2Ftests)
 2) Navigate to `CODEPAIR` tab 
 3) Click `+ New Interview`
@@ -30,6 +33,14 @@
 
 
 
-###NT - Non-Technical - Schedule Process
+### NT - Non-Technical - Schedule Process
 1) Log-in to zoom acount for the interview shift 
 2) 
+
+
+get appointment => return arr of all appointments
+    - book app via zoom || via hackerrank 
+hacker rank/zoom
+
+//access token 
+//
