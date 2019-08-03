@@ -12,7 +12,7 @@ const password = require("./personal/password").hackerPassword;
   await page.waitFor("#password");
 
   //log-in
-  //adding to the window
+  //adding credential to the window
   await page.evaluate(
     (email, password) => {
       window.email = email;
@@ -43,6 +43,7 @@ const password = require("./personal/password").hackerPassword;
   await page.waitFor(".js-new-interview");
   await page.click(".js-new-interview");
   await page.waitFor(".fw");
+
   // add candidate info and email for the invite
   await page.evaluate(
     (candidateEmail, interviewType) => {
@@ -76,12 +77,42 @@ const password = require("./personal/password").hackerPassword;
     sideBar.click();
   });
 
+  //expands the hidden import question
   await page2.waitFor(".js-open-library");
 
   await page2.evaluate(() => {
     let openPrompts = document.querySelector(".js-open-library");
     openPrompts.click();
   });
+
+  //search and select instruction from the modal
+  await page2.waitFor(".close");
+
+  await page2.evaluate(() => {
+    let instructionSearch = document.getElementsByName("searchKey")[0];
+    instructionSearch.value = "Tech Interview Instructions";
+    let searchButton = document.querySelector(".js-search-submit");
+    searchButton.click();
+  });
+
+  await page2.waitFor(".js-use-question");
+
+  await page2.evaluate(() => {
+    let useQuestion = document.querySelector(".js-use-question");
+    useQuestion.click();
+  });
+
+  //return the main page and close page2
+  await page2.waitFor(".icon-menu-small");
+  await page2.close();
+
+  await page.waitFor(".js-invite-participants");
+  const inviteURL = await page.evaluate(() => {
+    return document.URL;
+  });
+
+  await page.goto(inviteURL);
+  await page.waitFor(".js-invite-participants");
 
   await page.waitForNavigation();
   await page2.waitForNavigation();
