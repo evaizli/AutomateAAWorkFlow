@@ -1,4 +1,6 @@
 const puppeteer = require("puppeteer");
+
+//COMMENT OR UNCOMMENT OUT THE ZOOM ACCOUNT FOR USE
 const email = require("./personal/password").zoomEmail1;
 const password = require("./personal/password").zoomPassword1;
 // const email = require("./personal/password").zoomEmail2;
@@ -11,9 +13,9 @@ const password = require("./personal/password").zoomPassword1;
 // const candidateName = "Eve Test";
 
 (async (email, password) => {
-  const candidateName = "Eve Test"; //cannot leave it outside
-  const time = "11:00";
-  const ampm = "AM";
+  const candidateName = "Eve Test"; //cannot leave it outside && need to look into when refactor
+  const time = "1:00";
+  const ampm = "PM";
 
   const browser = await puppeteer.launch({
     headless: false
@@ -47,15 +49,13 @@ const password = require("./personal/password").zoomPassword1;
   });
 
   await page.click(".submit");
+
+  //navigate to schedule meeting form
   await page.waitFor("#btnScheduleMeeting");
   await page.click("#btnScheduleMeeting");
 
+  //enter meeting title & description
   await page.waitFor("#topic");
-
-  //   await page.evaluate(candidateName => {
-  //     window.candidateName = candidateName;
-  //   }, candidateName);
-
   await page.evaluate(candidateName => {
     let topic = document.getElementById("topic");
     topic.value = `App Academy Interview with ` + candidateName;
@@ -66,91 +66,51 @@ const password = require("./personal/password").zoomPassword1;
     agenda.value = "App Academy Non-technical Interview";
   });
 
+  //enter start time
+  await page.waitFor("#start_time");
   await page.evaluate(time => {
-    const startTime = document.getElementById("start_time");
-    startTime.value = time;
+    const inviteTime = document.getElementById("start_time");
+    inviteTime.value = time;
   }, time);
+
   await page.evaluate(ampm => {
-    const amPm = document.getElementById("start_time_2");
-    amPm.value = ampm;
+    const morningAfternoon = document.getElementById("start_time");
+    morningAfternoon.value = ampm;
   }, ampm);
 
+  await page.waitFor("#duration_hr");
   await page.evaluate(() => {
-    const durationHour = document.getElementById("duration_hr");
-    durationHour.value = 0;
+    const hr = document.getElementById("duration_hr");
+    hr.value = "0";
   });
+  await page.waitFor("#duration_min");
   await page.evaluate(() => {
-    const durationMinute = document.getElementById("duration_min");
-    durationMinute.value = 30;
-  });
-  await page.evaluate(() => {
-    const hostVideoOption = document.getElementById("option_video_host_on");
-    hostVideoOption.checked = "checked";
-  });
-  await page.evaluate(() => {
-    const audioOption = document.getElementById("option_audio_both");
-    audioOption.checked = "checked";
-  });
-  await page.evaluate(() => {
-    const waitingRoomOption = document.getElementById("option_waiting_room");
-    waitingRoomOption.checked = "checked";
-  });
-  await page.evaluate(() => {
-    const recordOption = document.getElementById("option_autorec_cloud");
-    recordOption.checked = "checked";
+    const durationMin = document.getElementById("duration_min");
+    durationMin.value = "30";
   });
 
-  await page.click(".submit");
-  //   await page.$eval(
-  //     "#topic",
-  //     el => (el.val = `App Academy Interview with ` + window.candidateName)
-  //   );
-  //   await page.evaluate(() => {
-  //     window.candidateName = null;
-  //   });
-  // //candidate information
-  // const candidateEmail = "eva.li.pan@gmail.com";
-  // const name = "Evan Fan";
-  // const interviewType = "App Academy Technical Interview -" + name;
+  // await page.waitFor("#option_video_host_on");
+  // await page.evaluate(() => {
+  //   const hostVideoOption = document.getElementById("option_video_host_on");
+  //   hostVideoOption.checked = "checked";
+  // });
 
-  // await page.waitFor(".tab-link");
-  // await page.goto("https://www.hackerrank.com/x/interviews/mypads");
-  // await page.waitFor(".js-new-interview");
-  // await page.click(".js-new-interview");
-  // await page.waitFor(".fw");
-  // await page.$eval(".fw", el => (el.value = email));
-  // await page.$eval(".fw", el => (el.value = name));
+  // await page.waitFor("#option_audio_both");
+  // await page.evaluate(() => {
+  //   const audioOption = document.getElementById("option_audio_both");
+  //   audioOption.checked = "checked";
+  // });
 
-  // await page.evaluate(
-  //     (email, interviewType) => {
-  //         let inputs = document.querySelectorAll(".fw");
-  //         console.log("INPUTS", inputs);
-  //         inputs[0].value = email;
-  //         inputs[1].value = interviewType;
-  //         inputs[2].click();
-  //         // debugger
-  //     },
-  //     email,
-  //     interviewType
-  // );
-  // await page.waitFor(".js-invite-participants");
-  // await page.click(".js-invite-participants");
+  // await page.evaluate(() => {
+  //   const waitingRoomOption = document.getElementById("option_waiting_room");
+  //   waitingRoomOption.checked = "checked";
+  // });
+  // await page.evaluate(() => {
+  //   const recordOption = document.getElementById("option_autorec_cloud");
+  //   recordOption.checked = "checked";
+  // });
 
-  // await page.waitFor("candidate-container");
-
-  // await page.evaluate(name => {
-  //     let container = document.getElementById("candidate-container");
-  //     container.children[0].value = name;
-  //     console.log(name);
-  // }, name);
-
-  // //   await page.waitFor("#title-container");
-  // //   await page.click("#interview-link");
-
-  // //   await page.waitFor(".cp_sideHead");
-  // //   await page.click(".js-open-library.btn.btn-green.block-center");
-
-  // //
+  // await page.click(".submit");
 
   await page.waitForNavigation();
 })(email, password);

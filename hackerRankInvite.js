@@ -67,7 +67,7 @@ const password = require("./personal/password").hackerPassword;
   const codePairLink = await page.evaluate(() => {
     return document.getElementById("interview-link").href;
   });
-  // open new page
+  // open new page & set up codepair environment
   const page2 = await browser.newPage();
   await page2.setViewport({ width: 1280, height: 700 });
   await page2.goto(codePairLink);
@@ -78,7 +78,7 @@ const password = require("./personal/password").hackerPassword;
     sideBar.click();
   });
 
-  //expands the hidden import question
+  //expand the hidden import question
   await page2.waitFor(".js-open-library");
 
   await page2.evaluate(() => {
