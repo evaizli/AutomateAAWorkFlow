@@ -4,7 +4,7 @@ const password = require("./personal/password").hackerPassword;
 (async (email, password) => {
   const browser = await puppeteer.launch({ headless: false });
   const page = await browser.newPage();
-  await page.setViewport({ width: 1280, height: 800 });
+  await page.setViewport({ width: 1280, height: 700 });
 
   //navigate to page
   await page.goto("https://www.hackerrank.com/work/login");
@@ -37,6 +37,7 @@ const password = require("./personal/password").hackerPassword;
   const candidateEmail = "eva.li.pan@gmail.com";
   const candidateName = "Evan Fan";
   const interviewType = "App Academy Technical Interview -" + candidateName;
+  const meetingTime = "21:00";
 
   await page.waitFor(".tab-link");
   await page.goto("https://www.hackerrank.com/x/interviews/mypads");
@@ -68,7 +69,7 @@ const password = require("./personal/password").hackerPassword;
   });
   // open new page
   const page2 = await browser.newPage();
-  await page2.setViewport({ width: 1280, height: 800 });
+  await page2.setViewport({ width: 1280, height: 700 });
   await page2.goto(codePairLink);
 
   await page2.waitFor(".icon-menu-small");
@@ -106,14 +107,59 @@ const password = require("./personal/password").hackerPassword;
   await page2.waitFor(".icon-menu-small");
   await page2.close();
 
-  await page.waitFor(".js-invite-participants");
+  await page.goForward();
+  await page.waitFor("#interview-link");
+
   const inviteURL = await page.evaluate(() => {
-    return document.URL;
+    let url = document.URL;
+    return url;
   });
 
   await page.goto(inviteURL);
-  await page.waitFor(".js-invite-participants");
+  await page.waitFor("#interview-link");
 
+  await page.waitFor("#candidate-email");
+
+  await page.evaluate(candidateName => {
+    const nameElem = document.getElementsByName("candidate-name")[0];
+    nameElem.value = candidateName;
+  }, candidateName);
+
+  await page.waitFor("#start-date");
+
+  await page.evaluate(() => {
+    const dateElem = document.getElementById("start-date");
+    const today = new Date();
+    const year = today.getFullYear();
+    const day = today.getDate();
+    const month = today.getMonth() + 1;
+    dateElem.value = month + "-" + day + "-" + year;
+  });
+
+  await page.evaluate(meetingTime => {
+    const timeElem = document.getElementById("start-time");
+    timeElem.value = meetingTime;
+  }, meetingTime);
+
+  await page.click("#interview-update");
+
+  await page.waitFor(".hr-dialog-button");
+  await page.waitFor(".btn-primary");
+
+  //UNCOMMENT TO ACTIVE COMMAND. SHOULD ALWAYS DOUBLE CHECK MEETING TIME BEFORE SEND INVITE.
+
+  //DO NOT SEND invites to all participants
+  // await page.evaluate(() => {
+  //   const doNotSend = document.querySelector(".hr-dialog-button");
+  //   doNotSend.click();
+  // });
+
+  //SEND invites to all participants
+  // await page.evaluate(() => {
+  //   const sendInvite = document.querySelector(".btn-primary");
+  //   sendInvite.click();
+  // });
+
+  await page.waitFor("#interview-update");
   await page.waitForNavigation();
-  await page2.waitForNavigation();
 })(email, password);
