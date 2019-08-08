@@ -6,11 +6,7 @@ const password = require("./personal/password").hackerPassword;
   const page = await browser.newPage();
   await page.setViewport({ width: 1280, height: 700 });
 
-  //CANDIDATE INFORMATION: REPLACE CANDIDATE INFORMATION BEFORE RUNNING THE SCRIPT
-  // const candidateEmail = "epan@appacademy.io";
-  // const candidateName = "Evan Fan";
-  // const interviewType = "App Academy Technical Interview -" + candidateName;
-  // const meetingTime = "11:00";
+  //CANDIDATE INFORMATION: FILL IN CANDIDATE INFORMATION BEFORE RUNNING THE SCRIPT
   const candidateEmail = "";
   const candidateName = "";
   const interviewType = "App Academy Technical Interview -" + candidateName;
