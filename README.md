@@ -15,7 +15,7 @@ The purpose of this project is to use Puppeteer API, a node library, to automate
 4. Create a `passowrd.js` file within the personal folder. The entire folder has already been included in the `.gitignore` file. Should always double check to avoid credentials being pushed out in public.
 5. In the `password.js` add HackerRank and Zoom credentials (feel free to change the naming convention but please remember to update the required file path name).
 
-### HackRank Script:
+### HackerRank Script:
 
 To use the HackerRank script to send invite:
 
