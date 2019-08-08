@@ -19,9 +19,9 @@ The purpose of this project is to use Puppeteer API, a node library, to automate
 
 To use the HackerRank script to send invite:
 
-1. Go to `hackerRankInvite.js` file
-2. Update the `candidateEmail` && `candidateName` && `meetingTime` in military time
-3. In command line, go to the root folder of this project and run `node hackerRankInvite.js`
+1. Go to `hackerRankInvite.js` file.
+2. Update the `candidateEmail` && `candidateName` && `meetingTime` in military time.
+3. In command line, go to the root folder of this project and run `node hackerRankInvite.js`.
 4. The script will open up your browser and log-in to HackerRank to fill in the meeting invite form with the candidate information and meeting time.
 5. The script will stop after filling in all the invite form information.
 6. Manually check all the information is correctly filled and manually click `Save` and `Send Invite` to complete the process.
