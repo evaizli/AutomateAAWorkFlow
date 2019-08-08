@@ -26,7 +26,7 @@ To use the HackerRank script to send invite:
 5. The script will stop after filling in all the invite form information.
 6. Manually check all the information is correctly filled and manually click `Save` and `Send Invite` to complete the process.
 
-Note: Step 6 can be automated by uncomment the scripts at the bottom of the script. It is recommended to manually save and send invite externally after doubling checking the candidate information.
+Note: Step 6 can be automated by uncommenting the scripts at the bottom of the HackerRank script file. It is recommended to manually save and send invite externally after doubling checking the candidate information.
 
 ### Zoom Script:
 
