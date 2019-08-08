@@ -6,6 +6,16 @@ const password = require("./personal/password").hackerPassword;
   const page = await browser.newPage();
   await page.setViewport({ width: 1280, height: 700 });
 
+  //CANDIDATE INFORMATION: REPLACE CANDIDATE INFORMATION BEFORE RUNNING THE SCRIPT
+  // const candidateEmail = "epan@appacademy.io";
+  // const candidateName = "Evan Fan";
+  // const interviewType = "App Academy Technical Interview -" + candidateName;
+  // const meetingTime = "11:00";
+  const candidateEmail = "";
+  const candidateName = "";
+  const interviewType = "App Academy Technical Interview -" + candidateName;
+  const meetingTime = "11:00";
+
   //navigate to page
   await page.goto("https://www.hackerrank.com/work/login");
   await page.waitFor("#email");
@@ -32,12 +42,6 @@ const password = require("./personal/password").hackerPassword;
   });
 
   await page.click(".signupBtn");
-
-  //candidate information
-  const candidateEmail = "eva.li.pan@gmail.com";
-  const candidateName = "Evan Fan";
-  const interviewType = "App Academy Technical Interview -" + candidateName;
-  const meetingTime = "21:00";
 
   await page.waitFor(".tab-link");
   await page.goto("https://www.hackerrank.com/x/interviews/mypads");
@@ -141,12 +145,12 @@ const password = require("./personal/password").hackerPassword;
     timeElem.value = meetingTime;
   }, meetingTime);
 
-  await page.click("#interview-update");
-
-  await page.waitFor(".hr-dialog-button");
-  await page.waitFor(".btn-primary");
-
   //UNCOMMENT TO ACTIVE COMMAND. SHOULD ALWAYS DOUBLE CHECK MEETING TIME BEFORE SEND INVITE.
+
+  // await page.click("#interview-update");
+
+  // await page.waitFor(".hr-dialog-button");
+  // await page.waitFor(".btn-primary");
 
   //DO NOT SEND invites to all participants
   // await page.evaluate(() => {
