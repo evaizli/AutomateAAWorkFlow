@@ -14,7 +14,7 @@ const password = require("./personal/password").zoomPassword1;
 
 (async (email, password) => {
   const candidateName = "Eve Test"; //cannot leave it outside && need to look into when refactor
-  const time = "1:00";
+  const time = "2:00";
   const ampm = "PM";
 
   const browser = await puppeteer.launch({
@@ -42,7 +42,7 @@ const password = require("./personal/password").zoomPassword1;
   await page.$eval("#email", el => (el.value = window.email));
   await page.$eval("#password", el => (el.value = window.password));
 
-  // remnove credential from window
+  // remove credential from window
   await page.evaluate(() => {
     window.email = null;
     window.password = null;
@@ -61,6 +61,7 @@ const password = require("./personal/password").zoomPassword1;
     topic.value = `App Academy Interview with ` + candidateName;
   }, candidateName);
 
+  await page.waitFor("#agenda");
   await page.evaluate(() => {
     let agenda = document.getElementById("agenda");
     agenda.value = "App Academy Non-technical Interview";
@@ -68,26 +69,28 @@ const password = require("./personal/password").zoomPassword1;
 
   //enter start time
   await page.waitFor("#start_time");
-  await page.evaluate(time => {
-    const inviteTime = document.getElementById("start_time");
-    inviteTime.value = time;
-  }, time);
+  await page.$eval("#start_time", el => (el._value = "2:00"));
+  // await page.evaluate(time => {
+  //   let startTime = document.getElementById("start_time");
+  //   startTime.value = time;
+  // }, time);
 
-  await page.evaluate(ampm => {
-    const morningAfternoon = document.getElementById("start_time");
-    morningAfternoon.value = ampm;
-  }, ampm);
+  // await page.waitFor("start_time_2");
+  // await page.evaluate(ampm => {
+  //   const morningAfternoon = document.getElementById("start_time_2");
+  //   morningAfternoon.value = ampm;
+  // }, ampm);
 
-  await page.waitFor("#duration_hr");
-  await page.evaluate(() => {
-    const hr = document.getElementById("duration_hr");
-    hr.value = "0";
-  });
-  await page.waitFor("#duration_min");
-  await page.evaluate(() => {
-    const durationMin = document.getElementById("duration_min");
-    durationMin.value = "30";
-  });
+  // await page.waitFor("#duration_hr");
+  // await page.evaluate(() => {
+  //   const hr = document.getElementById("duration_hr");
+  //   hr.value = "0";
+  // });
+  // await page.waitFor("#duration_min");
+  // await page.evaluate(() => {
+  //   const durationMin = document.getElementById("duration_min");
+  //   durationMin.value = "30";
+  // });
 
   // await page.waitFor("#option_video_host_on");
   // await page.evaluate(() => {
