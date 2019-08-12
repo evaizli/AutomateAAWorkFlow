@@ -50,6 +50,23 @@ const password = require("./personal/password").zoomPassword1;
   await page.waitFor("#btnScheduleMeeting");
   await page.click("#btnScheduleMeeting");
 
+  const candidateName = "Eve Test"; //cannot leave it outside && need to look into when refactor
+  const time = "2:00";
+  const ampm = "PM";
+
+  //enter meeting title & description
+  await page.waitFor("#topic");
+  await page.evaluate(candidateName => {
+    let topic = document.getElementById("topic");
+    topic.value = `App Academy Interview with ` + candidateName;
+  }, candidateName);
+
+  await page.waitFor("#agenda");
+  await page.evaluate(() => {
+    let agenda = document.getElementById("agenda");
+    agenda.value = "App Academy Non-technical Interview";
+  });
+
   await page.waitFor("#host_video");
   await page.waitFor("#option_video_host_on");
   await page.evaluate(() => {
