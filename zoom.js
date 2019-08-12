@@ -67,6 +67,34 @@ const password = require("./personal/password").zoomPassword1;
     agenda.value = "App Academy Non-technical Interview";
   });
 
+  // meeting time
+  //   await page.waitFor("#mt_time");
+  //   await page.waitFor("#start_time");
+  //   await page.evaluate(() => {
+  //     const startTime = document.getElementById("start_time");
+  //     startTime.value = "10:00";
+  //   });
+
+  //   //   await page.waitFor("#mt_time");
+  //   await page.waitFor("start_time_2");
+  //   await page.evaluate(() => {
+  //     const amPm = document.getElementById("start_time_2");
+  //     amPm.value = "PM";
+  //   });
+
+  //   await page.waitFor("#duration_hr");
+  //   await page.evaluate(() => {
+  //     const hr = document.getElementById("duration_hr");
+  //     hr.value = "0";
+  //   });
+
+  //   await page.waitFor("#duration_min");
+  //   await page.evaluate(() => {
+  //     const durationMin = document.getElementById("duration_min");
+  //     durationMin.value = "30";
+  //   });
+
+  // meeting options
   await page.waitFor("#host_video");
   await page.waitFor("#option_video_host_on");
   await page.evaluate(() => {
