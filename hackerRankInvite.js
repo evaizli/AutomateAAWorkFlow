@@ -9,8 +9,8 @@ const password = require("./personal/password").hackerPassword;
   //CANDIDATE INFORMATION: FILL IN CANDIDATE INFORMATION BEFORE RUNNING THE SCRIPT
   const candidateEmail = "";
   const candidateName = "";
-  const interviewType = "App Academy Technical Interview -" + candidateName;
-  const meetingTime = "11:00";
+  const interviewType = "App Academy TechnicalInterview -" + candidateName;
+  const meetingTime = "9:00";
 
   //navigate to page
   await page.goto("https://www.hackerrank.com/work/login");

@@ -1,10 +1,10 @@
 const puppeteer = require("puppeteer");
 
 //COMMENT OR UNCOMMENT OUT THE ZOOM ACCOUNT FOR USE
-const email = require("./personal/password").zoomEmail1;
-const password = require("./personal/password").zoomPassword1;
-// const email = require("./personal/password").zoomEmail2;
-// const password = require("./personal/password").zoomPassword2;
+// const email = require("./personal/password").zoomEmail1;
+// const password = require("./personal/password").zoomPassword1;
+const email = require("./personal/password").zoomEmail2;
+const password = require("./personal/password").zoomPassword2;
 // const email = require("./personal/password").zoomEmail3;
 // const password = require("./personal/password").zoomPassword3;
 // const email = require("./personal/password").zoomEmail4;
@@ -113,18 +113,18 @@ const password = require("./personal/password").zoomPassword1;
     const waitingRoomOption = document.getElementById("option_waiting_room");
     waitingRoomOption.checked = "checked";
   });
+  // AutoRecord Off
+  // await page.waitFor("#option_autorec");
+  // await page.evaluate(() => {
+  //   const autoRecordOption = document.getElementById("option_autorec");
+  //   autoRecordOption.checked = "checked";
+  // });
 
-  await page.waitFor("#option_autorec");
-  await page.evaluate(() => {
-    const autoRecordOption = document.getElementById("option_autorec");
-    autoRecordOption.checked = "checked";
-  });
-
-  await page.waitFor("#option_autorec_cloud");
-  await page.evaluate(() => {
-    const cloudRecord = document.getElementById("option_autorec_cloud");
-    cloudRecord.checked = "checked";
-  });
+  // await page.waitFor("#option_autorec_cloud");
+  // await page.evaluate(() => {
+  //   const cloudRecord = document.getElementById("option_autorec_cloud");
+  //   cloudRecord.checked = "checked";
+  // });
 
   await page.waitForNavigation();
 })(email, password);
