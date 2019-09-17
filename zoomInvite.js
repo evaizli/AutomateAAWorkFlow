@@ -19,8 +19,8 @@ const password = require("./personal/password").zoomPassword1;
   //Meeting duration:
   //ex: for 1 hour meeting, set hour = "1" and minute = "0"
   //ex: for 30 minute meeting. set hour = "0" and minute = "30"
-  const hour = "1";
-  const minute = "0";
+  const hour = "0";
+  const minute = "30";
 
   const browser = await puppeteer.launch({
     headless: false
@@ -80,6 +80,10 @@ const password = require("./personal/password").zoomPassword1;
   await page.waitFor(".short-select");
   await page.waitFor(".zm-select");
   await page.waitFor(".zm-select-input");
+  await page.waitFor(".z-form-row");
+  await page.waitFor("#meetingVideo");
+  await page.waitFor(".controls.col-md-10");
+
   await page.waitFor("#start_time");
   await page.evaluate(time => {
     let startTime = document.getElementById("start_time");
@@ -104,11 +108,12 @@ const password = require("./personal/password").zoomPassword1;
     durationMin.value = minute;
   }, minute);
 
-  // await page.waitFor("#option_video_host_on");
-  // await page.evaluate(() => {
-  //   const hostVideoOption = document.getElementById("option_video_host_on");
-  //   hostVideoOption.checked = "checked";
-  // });
+  //filling video option
+  await page.waitFor("#option_video_host_on");
+  await page.evaluate(() => {
+    const hostVideoOption = document.getElementById("option_video_host_on");
+    hostVideoOption.checked = "checked";
+  });
 
   // await page.waitFor("#option_audio_both");
   // await page.evaluate(() => {
