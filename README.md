@@ -36,6 +36,16 @@ There are comments included in the scripts to help users understand the code and
 
 1. Open `hackerRankInvite.js` file to add meeting detail.
 2. Update the `candidateEmail`, `candidateName`, `meetingTime` in military time.
+
+   ```
+   //CANDIDATE INFORMATION: FILL IN CANDIDATE INFORMATION BEFORE RUNNING THE SCRIPT
+   const candidateEmail = "example@email.com";
+   const candidateName = "Alexander Hamilton";
+   const interviewType = "App Academy Technical Interview -" + candidateName;
+   const meetingTime = "11:00"; //need to be military time
+
+   ```
+
 3. In command line, go to the root folder of this project and run `node hackerRankInvite.js`.
 4. The script will open up your browser and log-in to HackerRank to fill in the meeting invite form with the candidate information and meeting time.
 5. The script will stop after filling in all the invite form information.
@@ -46,8 +56,8 @@ Note: Step 6 can be automated by uncommenting the codes at the bottom of the Hac
 ### Run Zoom Script Steps:
 
 1. Open `zoomInvite.js` file to add meeting detail.
-2. Check the `email` and `password` to make sure the correct zoom is commented in for interview shift.
-3. Update `candidateName`, meetign `time`, and mornign or afternnon `ampm`. The
+2. Check the `email` and `password` to make sure the correct zoom account is commented in for interview shift. Make sure to add the zoom account credentials in the `password.js` file.
+3. Update `candidateName`, meetign `time`, and mornign or afternnon `ampm`.
 4. If needed update the duration. The default is 1 hour.
 
    ```
@@ -62,7 +72,7 @@ Note: Step 6 can be automated by uncommenting the codes at the bottom of the Hac
        const minute = "00";
    ```
 
-5. The script will stop once all the information is filled.
+5. Go to command line and run `node zoomInvite.js`. The script will stop once all the information is filled.
 6. Manually check to make sure the information is correctly filled.
 7. Manually click "Save" to schedule the meeting.
 
