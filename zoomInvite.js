@@ -83,6 +83,8 @@ const password = require("./personal/password").zoomPassword1;
   await page.waitFor(".z-form-row");
   await page.waitFor("#meetingVideo");
   await page.waitFor(".controls.col-md-10");
+  await page.waitFor("#meeting_audio_options");
+  await page.waitFor(".radio");
 
   await page.waitFor("#start_time");
   await page.evaluate(time => {
@@ -115,16 +117,12 @@ const password = require("./personal/password").zoomPassword1;
     hostVideoOption.checked = "checked";
   });
 
-  // await page.waitFor("#option_audio_both");
-  // await page.evaluate(() => {
-  //   const audioOption = document.getElementById("option_audio_both");
-  //   audioOption.checked = "checked";
-  // });
+  await page.waitFor("#option_audio_both");
+  await page.evaluate(() => {
+    const audioOption = document.getElementById("option_audio_both");
+    audioOption.checked = "checked";
+  });
 
-  // await page.evaluate(() => {
-  //   const waitingRoomOption = document.getElementById("option_waiting_room");
-  //   waitingRoomOption.checked = "checked";
-  // });
   // await page.evaluate(() => {
   //   const recordOption = document.getElementById("option_autorec_cloud");
   //   recordOption.checked = "checked";
