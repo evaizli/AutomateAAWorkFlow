@@ -38,7 +38,7 @@ There are comments included in the scripts to help users understand the code and
 2. Update the `candidateEmail`, `candidateName`, `meetingTime` in military time.
 
    ```
-   //CANDIDATE INFORMATION: FILL IN CANDIDATE INFORMATION BEFORE RUNNING THE SCRIPT
+   //EXAMPLE
    const candidateEmail = "example@email.com";
    const candidateName = "Alexander Hamilton";
    const interviewType = "App Academy Technical Interview -" + candidateName;
