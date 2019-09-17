@@ -15,7 +15,12 @@ const password = require("./personal/password").zoomPassword1;
 (async (email, password) => {
   const candidateName = "Eve Test"; //cannot leave it outside && need to look into when refactor
   const time = "2:00";
-  const ampm = "PM";
+  const ampm = "AM";
+  //Meeting duration:
+  //ex: for 1 hour meeting, set hour = "1" and minute = "0"
+  //ex: for 30 minute meeting. set hour = "0" and minute = "30"
+  const hour = "1";
+  const minute = "0";
 
   const browser = await puppeteer.launch({
     headless: false
@@ -42,7 +47,7 @@ const password = require("./personal/password").zoomPassword1;
   await page.$eval("#email", el => (el.value = window.email));
   await page.$eval("#password", el => (el.value = window.password));
 
-  // remove credential from window
+  //remove credential from window
   await page.evaluate(() => {
     window.email = null;
     window.password = null;
@@ -54,7 +59,7 @@ const password = require("./personal/password").zoomPassword1;
   await page.waitFor("#btnScheduleMeeting");
   await page.click("#btnScheduleMeeting");
 
-  //enter meeting title & description
+  //filling meeting title & description
   await page.waitFor("#topic");
   await page.evaluate(candidateName => {
     let topic = document.getElementById("topic");
@@ -67,7 +72,7 @@ const password = require("./personal/password").zoomPassword1;
     agenda.value = "App Academy Non-technical Interview";
   });
 
-  //enter start time
+  //filling start time
   await page.waitFor("#mt_time");
   await page.waitFor("#start_time");
   await page.waitFor(".controls.col-md-10.static");
@@ -81,24 +86,23 @@ const password = require("./personal/password").zoomPassword1;
     startTime.value = time;
   }, time);
   await page.waitFor("#start_time_2");
-  await page.$eval("#start_time_2", el => (el.value = "AM"));
+  await page.evaluate(ampm => {
+    const morningAfternoon = document.getElementById("start_time_2");
+    morningAfternoon.value = ampm;
+  }, ampm);
 
-  // await page.waitFor("start_time_2");
-  // await page.evaluate(ampm => {
-  //   const morningAfternoon = document.getElementById("start_time_2");
-  //   morningAfternoon.value = ampm;
-  // }, ampm);
-
-  // await page.waitFor("#duration_hr");
-  // await page.evaluate(() => {
-  //   const hr = document.getElementById("duration_hr");
-  //   hr.value = "0";
-  // });
-  // await page.waitFor("#duration_min");
-  // await page.evaluate(() => {
-  //   const durationMin = document.getElementById("duration_min");
-  //   durationMin.value = "30";
-  // });
+  //filling meeting duration
+  await page.waitFor(".duration-controls");
+  await page.waitFor("#duration_hr");
+  await page.evaluate(hour => {
+    const hr = document.getElementById("duration_hr");
+    hr.value = hour;
+  }, hour);
+  await page.waitFor("#duration_min");
+  await page.evaluate(minute => {
+    const durationMin = document.getElementById("duration_min");
+    durationMin.value = minute;
+  }, minute);
 
   // await page.waitFor("#option_video_host_on");
   // await page.evaluate(() => {
