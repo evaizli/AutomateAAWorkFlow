@@ -123,10 +123,8 @@ const password = require("./personal/password").zoomPassword1;
     audioOption.checked = "checked";
   });
 
-  // await page.evaluate(() => {
-  //   const recordOption = document.getElementById("option_autorec_cloud");
-  //   recordOption.checked = "checked";
-  // });
+  //uncomment out the following code to automate saving process.
+  //User should alway manually check the auto-filled information before saving.
 
   // await page.click(".submit");
 
