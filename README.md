@@ -72,7 +72,7 @@ Note: Step 6 can be automated by uncommenting the codes at the bottom of the Hac
        const minute = "0";
    ```
 
-5. Go to command line and run `node zoomInvite.js`. The script will stop once all the information is filled.
+5. Go to command line and run `node zoomInvite.js`. The script will open up your browser and log-in to the zoom account and fill out the meeting information. It will stop once all the information is filled.
 6. Manually check to make sure the information is correctly filled.
 7. Manually click "Save" to schedule the meeting.
 
