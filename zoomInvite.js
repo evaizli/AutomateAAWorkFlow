@@ -13,9 +13,8 @@ const password = require("./personal/password").zoomPassword1;
 // const candidateName = "Eve Test";
 
 (async (email, password) => {
-  const candidateName = "Eve Test"; //cannot leave it outside && need to look into when refactor
-  const time = "2:00";
-  const ampm = "AM";
+  const candidateName = "Eve Test";
+  const ampm = "AM"; //need to be capitalized.
   //Meeting duration:
   //ex: for 1 hour meeting, set hour = "1" and minute = "0"
   //ex: for 30 minute meeting. set hour = "0" and minute = "30"
