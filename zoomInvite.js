@@ -68,12 +68,20 @@ const password = require("./personal/password").zoomPassword1;
   });
 
   //enter start time
+  await page.waitFor("#mt_time");
   await page.waitFor("#start_time");
-  await page.$eval("#start_time", el => (el._value = "2:00"));
-  // await page.evaluate(time => {
-  //   let startTime = document.getElementById("start_time");
-  //   startTime.value = time;
-  // }, time);
+  await page.waitFor(".controls.col-md-10.static");
+  await page.waitFor(".time-select");
+  await page.waitFor(".short-select");
+  await page.waitFor(".zm-select");
+  await page.waitFor(".zm-select-input");
+  await page.waitFor("#start_time");
+  await page.evaluate(time => {
+    let startTime = document.getElementById("start_time");
+    startTime.value = time;
+  }, time);
+  await page.waitFor("#start_time_2");
+  await page.$eval("#start_time_2", el => (el.value = "AM"));
 
   // await page.waitFor("start_time_2");
   // await page.evaluate(ampm => {

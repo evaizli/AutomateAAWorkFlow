@@ -1,6 +1,7 @@
 const puppeteer = require("puppeteer");
 const email = require("./personal/password").hackerEmail;
 const password = require("./personal/password").hackerPassword;
+
 (async (email, password) => {
   const browser = await puppeteer.launch({ headless: false });
   const page = await browser.newPage();
