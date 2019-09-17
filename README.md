@@ -69,7 +69,7 @@ Note: Step 6 can be automated by uncommenting the codes at the bottom of the Hac
     //ex: for 1 hour meeting, set hour = "1" and minute = "0"
     //ex: for 30 minute meeting. set hour = "0" and minute = "30"
        const hour = "1";
-       const minute = "00";
+       const minute = "0";
    ```
 
 5. Go to command line and run `node zoomInvite.js`. The script will stop once all the information is filled.
