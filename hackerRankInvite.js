@@ -8,7 +8,7 @@ const password = require("./personal/password").hackerPassword;
   await page.setViewport({ width: 1280, height: 700 });
 
   //CANDIDATE INFORMATION: FILL IN CANDIDATE INFORMATION BEFORE RUNNING THE SCRIPT
-  const candidateEmail = "eva.li.pan@gmail.com";
+  const candidateEmail = "eva.li.pan";
   const candidateName = "Eva Pan";
   const interviewType = "App Academy Technical Interview -" + candidateName;
   const meetingTime = "11:00";
@@ -17,19 +17,25 @@ const password = require("./personal/password").hackerPassword;
   await page.goto("https://www.hackerrank.com/work/login");
   await page.waitFor("#input-1");
   await page.waitFor(".login-form__button");
+  await page.click("#input-1");
+  await page.keyboard.press("ArrowRight");
+  await page.keyboard.press("Backspace");
+  await page.type("#input-1", email, { delay: 100 });
+  await page.waitFor(1000);
 
-  await page.evaluate(email => {
-    window.email = email;
-  }, email);
+  // await page.$eval("#input-1", el => (el.value = window.email));
 
-  await page.$eval("#input-1", el => (el.value = window.email));
-
-  await page.evaluate(() => {
-    window.email = null;
-  });
+  // await page.evaluate(() => {
+  //   window.email = null;
+  // });
 
   await page.waitFor(".login-form__button");
-  // await page.click(".login-form__button");
+  await page.click(".login-form__button");
+
+  await page.waitFor("#input-1");
+  await page.click("#input-1");
+  await page.type("#input-1", password, { delay: 100 });
+  await page.click(".login-form__button");
 
   // await page.waitFor("#password");
 
