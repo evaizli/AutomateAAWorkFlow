@@ -8,10 +8,10 @@ const password = require("./personal/password").hackerPassword;
   await page.setViewport({ width: 1280, height: 700 });
 
   //CANDIDATE INFORMATION: FILL IN CANDIDATE INFORMATION BEFORE RUNNING THE SCRIPT
-  const candidateEmail = "eva.li.pan@gmail.com";
-  const candidateName = "Eva Pan";
+  const candidateEmail = "ahamilton@gmail.com";
+  const candidateName = "Alexander Hamilton";
   const interviewType = "App Academy Technical Interview -" + candidateName;
-  const meetingTime = "11:00";
+  const meetingTime = "11:00"; //must be military time
 
   //navigate to page
   await page.goto("https://www.hackerrank.com/work/login");
@@ -31,29 +31,6 @@ const password = require("./personal/password").hackerPassword;
   await page.keyboard.type(password, { delay: 100 });
   await page.waitFor(1000);
   await page.click(".login-form__button");
-
-  // await page.waitFor("#password");
-
-  //log-in
-  //adding credential to the window
-  // await page.evaluate(
-  //   (email, password) => {
-  //     window.email = email;
-  //     window.password = password;
-  //   },
-  //   email,
-  //   password
-  // );
-
-  // await page.$eval("#password", el => (el.value = window.password));
-
-  // // remnove credential from window
-  // await page.evaluate(() => {
-  //   window.email = null;
-  //   window.password = null;
-  // });
-
-  // await page.click(".signupBtn");
 
   await page.waitFor(".tab-link");
   await page.goto("https://www.hackerrank.com/x/interviews/mypads");
