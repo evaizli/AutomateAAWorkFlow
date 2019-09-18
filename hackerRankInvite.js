@@ -15,6 +15,7 @@ const password = require("./personal/password").hackerPassword;
 
   //navigate to page
   await page.goto("https://www.hackerrank.com/work/login");
+  //enter username and password
   await page.waitFor("#input-1");
   await page.waitFor(".login-form__button");
   await page.click("#input-1");

@@ -33,94 +33,87 @@ const password = require("./personal/password").zoomPassword1;
   await page.waitFor("#password");
 
   //log-in
-  //adding to the window
-  await page.evaluate(
-    (email, password) => {
-      window.email = email;
-      window.password = password;
-    },
-    email,
-    password
-  );
 
-  await page.$eval("#email", el => (el.value = window.email));
-  await page.$eval("#password", el => (el.value = window.password));
+  await page.click("#email");
+  await page.focus("#email");
+  await page.keyboard.type(email, { delay: 100 });
+  await page.waitFor(1000);
 
-  //remove credential from window
-  await page.evaluate(() => {
-    window.email = null;
-    window.password = null;
-  });
+  await page.click("#password");
+  await page.focus("#password");
+  await page.keyboard.type(password, { delay: 100 });
+  await page.waitFor(1000);
 
   await page.click(".submit");
 
-  //navigate to schedule meeting form
-  await page.waitFor("#btnScheduleMeeting");
-  await page.click("#btnScheduleMeeting");
+  // //navigate to schedule meeting form
+  // await page.waitFor("#btnScheduleMeeting");
+  // await page.click("#btnScheduleMeeting");
 
-  //filling meeting title & description
-  await page.waitFor("#topic");
-  await page.evaluate(candidateName => {
-    let topic = document.getElementById("topic");
-    topic.value = `App Academy Interview with ` + candidateName;
-  }, candidateName);
+  // //filling meeting title & description
+  // await page.waitFor("#topic");
+  // await page.evaluate(candidateName => {
+  //   let topic = document.getElementById("topic");
+  //   topic.value = `App Academy Interview with ` + candidateName;
+  // }, candidateName);
+  // await page.waitFor(1000);
+  // await page.waitFor("#agenda");
+  // await page.evaluate(() => {
+  //   let agenda = document.getElementById("agenda");
+  //   agenda.value = "App Academy Non-technical Interview";
+  // });
+  // await page.waitFor(1000);
 
-  await page.waitFor("#agenda");
-  await page.evaluate(() => {
-    let agenda = document.getElementById("agenda");
-    agenda.value = "App Academy Non-technical Interview";
-  });
+  // //filling start time
+  // await page.waitFor("#mt_time");
+  // await page.waitFor("#start_time");
+  // await page.waitFor(".controls.col-md-10.static");
+  // await page.waitFor(".time-select");
+  // await page.waitFor(".short-select");
+  // await page.waitFor(".zm-select");
+  // await page.waitFor(".zm-select-input");
+  // await page.waitFor(".z-form-row");
+  // await page.waitFor("#meetingVideo");
+  // await page.waitFor(".controls.col-md-10");
+  // await page.waitFor("#meeting_audio_options");
+  // await page.waitFor(".radio");
 
-  //filling start time
-  await page.waitFor("#mt_time");
-  await page.waitFor("#start_time");
-  await page.waitFor(".controls.col-md-10.static");
-  await page.waitFor(".time-select");
-  await page.waitFor(".short-select");
-  await page.waitFor(".zm-select");
-  await page.waitFor(".zm-select-input");
-  await page.waitFor(".z-form-row");
-  await page.waitFor("#meetingVideo");
-  await page.waitFor(".controls.col-md-10");
-  await page.waitFor("#meeting_audio_options");
-  await page.waitFor(".radio");
+  // await page.waitFor("#start_time");
+  // await page.evaluate(time => {
+  //   let startTime = document.getElementById("start_time");
+  //   startTime.value = time;
+  // }, time);
+  // await page.waitFor("#start_time_2");
+  // await page.evaluate(ampm => {
+  //   const morningAfternoon = document.getElementById("start_time_2");
+  //   morningAfternoon.value = ampm;
+  // }, ampm);
 
-  await page.waitFor("#start_time");
-  await page.evaluate(time => {
-    let startTime = document.getElementById("start_time");
-    startTime.value = time;
-  }, time);
-  await page.waitFor("#start_time_2");
-  await page.evaluate(ampm => {
-    const morningAfternoon = document.getElementById("start_time_2");
-    morningAfternoon.value = ampm;
-  }, ampm);
+  // //filling meeting duration
+  // await page.waitFor(".duration-controls");
+  // await page.waitFor("#duration_hr");
+  // await page.evaluate(hour => {
+  //   const hr = document.getElementById("duration_hr");
+  //   hr.value = hour;
+  // }, hour);
+  // await page.waitFor("#duration_min");
+  // await page.evaluate(minute => {
+  //   const durationMin = document.getElementById("duration_min");
+  //   durationMin.value = minute;
+  // }, minute);
 
-  //filling meeting duration
-  await page.waitFor(".duration-controls");
-  await page.waitFor("#duration_hr");
-  await page.evaluate(hour => {
-    const hr = document.getElementById("duration_hr");
-    hr.value = hour;
-  }, hour);
-  await page.waitFor("#duration_min");
-  await page.evaluate(minute => {
-    const durationMin = document.getElementById("duration_min");
-    durationMin.value = minute;
-  }, minute);
+  // //filling video option
+  // await page.waitFor("#option_video_host_on");
+  // await page.evaluate(() => {
+  //   const hostVideoOption = document.getElementById("option_video_host_on");
+  //   hostVideoOption.checked = "checked";
+  // });
 
-  //filling video option
-  await page.waitFor("#option_video_host_on");
-  await page.evaluate(() => {
-    const hostVideoOption = document.getElementById("option_video_host_on");
-    hostVideoOption.checked = "checked";
-  });
-
-  await page.waitFor("#option_audio_both");
-  await page.evaluate(() => {
-    const audioOption = document.getElementById("option_audio_both");
-    audioOption.checked = "checked";
-  });
+  // await page.waitFor("#option_audio_both");
+  // await page.evaluate(() => {
+  //   const audioOption = document.getElementById("option_audio_both");
+  //   audioOption.checked = "checked";
+  // });
 
   //uncomment out the following code to automate saving process.
   //User should alway manually check the auto-filled information before saving.
