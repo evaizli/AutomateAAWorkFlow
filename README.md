@@ -81,4 +81,5 @@ Note: Step 7 can be automated by uncommenting the code at the bottom of the Zoom
 
 ### Notes for Future Improvement
 
-1. Intergrate Google Calender API to send zoom meeting link to candidate with custom message.
+1. Intergrate Google Calender API to get all the name and email of candidates for shift.
+2. Intergrate Google Calender API to send zoom meeting link to candidate with custom message.
