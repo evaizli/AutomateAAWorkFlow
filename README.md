@@ -63,6 +63,7 @@ Note: Step 6 can be automated by uncommenting the codes at the bottom of the Hac
    ```
     //EXAMPLE:
        const candidateName = "Eve Test";
+        const time = "2:00";
        const ampm = "AM"; //need to be capitalized
 
     //Meeting duration:
