@@ -3,34 +3,33 @@ const email = require("./personal/password").hackerEmail;
 const password = require("./personal/password").hackerPassword;
 
 (async (email, password) => {
-  const browser = await puppeteer.launch({ headless: false });
+  const browser = await puppeteer.launch({ headless: false, defaultViewport: null });
   const page = await browser.newPage();
-  await page.setViewport({ width: 1280, height: 700 });
 
   //CANDIDATE INFORMATION: FILL IN CANDIDATE INFORMATION BEFORE RUNNING THE SCRIPT
-  const candidateEmail = "ahamilton@gmail.com";
-  const candidateName = "Alexander Hamilton";
+  const candidateEmail = "ernest.man10@gmail.com";
+  const candidateName = "Ernest Man"
   const interviewType = "App Academy Technical Interview -" + candidateName;
-  const meetingTime = "11:00"; //must be military time
+  const meetingTime = "20:00"; //must be military time
 
   //navigate to page
   await page.goto("https://www.hackerrank.com/work/login");
-  //enter username and password
+  //enter email
   await page.waitFor("#input-1");
   await page.waitFor(".login-form__button");
   await page.click("#input-1");
   await page.focus("#input-1");
-  await page.keyboard.type(email, { delay: 100 });
-  await page.waitFor(1000);
-
+  await page.keyboard.type(email, { delay: 10 });
+  await page.waitFor(200);
+  //enter password
   await page.waitFor(".login-form__button");
   await page.click(".login-form__button");
-  await page.waitFor(2000);
-  await page.waitFor("#input-1");
-  await page.click("#input-1");
-  await page.focus("#input-1");
-  await page.keyboard.type(password, { delay: 100 });
-  await page.waitFor(1000);
+  await page.waitFor(500);
+  await page.waitFor("#input-2");
+  await page.click("#input-2");
+  await page.focus("#input-2");
+  await page.keyboard.type(password, { delay: 10 });
+  await page.waitFor(200);
   await page.click(".login-form__button");
 
   await page.waitFor(".tab-link");
@@ -63,7 +62,6 @@ const password = require("./personal/password").hackerPassword;
   });
   // open new page & set up codepair environment
   const page2 = await browser.newPage();
-  await page2.setViewport({ width: 1280, height: 700 });
   await page2.goto(codePairLink);
 
   await page2.waitFor(".icon-menu-small");
@@ -85,31 +83,41 @@ const password = require("./personal/password").hackerPassword;
 
   await page2.evaluate(() => {
     let instructionSearch = document.getElementsByName("searchKey")[0];
-    instructionSearch.value = "Tech Interview Instructions";
+    instructionSearch.value = "Tech Instructions";
     let searchButton = document.querySelector(".js-search-submit");
     searchButton.click();
-  });
+  })
 
+  await page2.waitFor(1500);
   await page2.waitFor(".js-use-question");
+  // await page2.waitForFunction('document.querySelector(".span-flex-9").innerText.includes("Tech Instructions)')
 
   await page2.evaluate(() => {
     let useQuestion = document.querySelector(".js-use-question");
     useQuestion.click();
   });
 
-  //return the main page and close page2
-  await page2.waitFor(".icon-menu-small");
+  // await page2.waitFor(".icon-menu-small");
+
+  // check for technical instructions
+  await page2.waitFor(() =>
+    document.querySelector(".cp_questionWrap").innerText.includes("Technical Interview")
+  )
+
+  await page2.waitFor(1000)
   await page2.close();
 
-  await page.goForward();
+  // await page.goForward();
+
   await page.waitFor("#interview-link");
 
+  // this fills out the interviewer input
   const inviteURL = await page.evaluate(() => {
     let url = document.URL;
     return url;
   });
-
   await page.goto(inviteURL);
+
   await page.waitFor("#interview-link");
 
   await page.waitFor("#candidate-email");
@@ -137,10 +145,10 @@ const password = require("./personal/password").hackerPassword;
 
   // UNCOMMENT TO ACTIVE COMMAND. SHOULD ALWAYS DOUBLE CHECK MEETING TIME BEFORE SEND INVITE.
 
-  // await page.click("#interview-update");
+  await page.click("#interview-update");
 
-  // await page.waitFor(".hr-dialog-button");
-  // await page.waitFor(".btn-primary");
+  await page.waitFor(".hr-dialog-buttons");
+  await page.waitFor(".btn-primary");
 
   // DO NOT SEND invites to all participants
   // await page.evaluate(() => {
@@ -150,10 +158,16 @@ const password = require("./personal/password").hackerPassword;
 
   // SEND invites to all participants
   // await page.evaluate(() => {
-  //   const sendInvite = document.querySelector(".btn-primary");
+  //   const inviteButtons = document.querySelectorAll(".hr-dialog-buttons button");
+  //   const sendInvite = inviteButtons[inviteButtons.length - 1];
   //   sendInvite.click();
   // });
 
-  await page.waitFor("#interview-update");
+  // await page.waitFor(".ajax-msg");
+  // await page.waitFor(() =>
+  //   document.querySelector(".ajax-msg").innerText.includes("Email Sent Successfully")
+  // )
+
+  // await page.waitFor("#interview-update");
   await page.waitForNavigation();
 })(email, password);
