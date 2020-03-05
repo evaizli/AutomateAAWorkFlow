@@ -10,11 +10,11 @@ const SCOPES = ['https://www.googleapis.com/auth/calendar.readonly'];
 const TOKEN_PATH = 'token.json';
 
 // Load client secrets from a local file.
-fs.readFile('credentials.json', (err, content) => {
-    if (err) return console.log('Error loading client secret file:', err);
+// fs.readFile('credentials.json', (err, content) => {
+//     if (err) return console.log('Error loading client secret file:', err);
     // Authorize a client with credentials, then call the Google Calendar API.
-    authorize(JSON.parse(content), listEvents);
-});
+    // authorize(JSON.parse(content), listEvents);
+// });
 
 /**
  * Create an OAuth2 client with the given credentials, and then execute the
@@ -92,3 +92,55 @@ function listEvents(auth) {
         }
     });
 }
+
+// Find events/shifts for today until tomorrow
+function todayEvents(auth) {
+    const calendar = google.calendar({version: 'v3', auth});
+    // gets date for 24 hours later to later set upper and lower bound
+    const dayLater = new Date();
+    dayLater.setDate(dayLater.getDate() + 1);
+
+    calendar.events.list({
+        calendarId: 'primary',
+        timeMin: (new Date()).toISOString(),
+        timeMax: dayLater.toISOString(),
+        maxResults: 3,
+        singleEvents: true,
+        orderBy: "startTime"
+    }, (err, res) => {
+        if (err) return console.log("API Error: " + err);
+        const events = res.data.items;
+        if (events.length) {
+            console.log("Today's Events: ")
+            events.forEach( shift => {
+                const shiftStart = shift.start.dateTime
+                const shiftEnd = shift.end.dateTime
+                console.log(`${shift.summary}: ${shiftStart} - ${shiftEnd}`) 
+            })
+        } else {
+            console.log("No upcoming events found")
+        }
+    })
+}
+
+// Get Calendars (HiR SF, Interview 1 - 4, HiR Shifts)
+function myCalendars(auth) {
+    const calendar = google.calendar({version: 'v3', auth});
+    calendar.calendarList.list({}, (err, res) => {
+        if (err) return console.log("API Error: " + err);
+
+        if (res.data.items.length) {
+            res.data.items.forEach( cal => console.log(cal.id.toString() + " ~ " + cal.summary) )
+        } else {
+            console.log("No calendars")
+        }
+    });
+}
+
+// Load client secrets from a local file.
+fs.readFile('credentials.json', (err, content) => {
+    if (err) return console.log('Error loading client secret file:', err);
+    // Authorize a client with credentials, then call the Google Calendar API.
+    // authorize(JSON.parse(content), listEvents);
+    authorize(JSON.parse(content), todayEvents);
+});
