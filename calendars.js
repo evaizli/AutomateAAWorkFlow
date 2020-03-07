@@ -2,6 +2,8 @@ const fs = require('fs');
 const readline = require('readline');
 const { google } = require('googleapis');
 
+const hackerRank = require("./hackerRank");
+
 // If modifying these scopes, delete token.json.
 const SCOPES = ['https://www.googleapis.com/auth/calendar.readonly'];
 // The file token.json stores the user's access and refresh tokens, and is
@@ -78,6 +80,12 @@ function getAccessToken(oAuth2Client, callback) {
 function myEvents(auth) {
     const calendar = google.calendar({ version: 'v3', auth });
     // gets date for 3.5 hours later to later set upper and lower bound (one shift)
+
+    // testing
+    const testStart = new Date();
+
+    testStart.setDate(testStart.getDate() + 1);
+
     const hoursLater = new Date();
     // hoursLater.setHours(hoursLater.getHours() + 3.5);
 
@@ -85,6 +93,7 @@ function myEvents(auth) {
 
     calendar.events.list({
         calendarId: 'primary',
+        // timeMin: testStart.toISOString(),
         timeMin: (new Date()).toISOString(),
         timeMax: hoursLater.toISOString(),
         maxResults: 3,
@@ -95,6 +104,7 @@ function myEvents(auth) {
         const events = res.data.items;
         if (events[0]) {
             console.log("Today's Events: ")
+            // function should be called before/beginning of shift
             // function should do it for 1 shift at a time
             // find interview number from shift summary
 
@@ -155,38 +165,39 @@ function shiftEvents(auth, calendarId, start, end) { // start, end
 
                 if (event.summary.indexOf(":") > -1) { // if event is an interview
                     const type = event.summary.slice(0, event.summary.indexOf(":")); // parse to find interview type
-                    const candidateObj = {}
+                    const candidateObj = {"name": ""}
                     const descArr = event.description.split("\n"); // parse through description for candidate info
 
-                    candidateObj["Summary"] = event.summary
-                    candidateObj["Start"] = event.start
+                    // find first, last, email through parsing
+                    for (let i = 0; i < descArr.length; i++) {
+                        let info = descArr[i];
+                        let infoSplit = info.split(": ");
+                        if (infoSplit[0].includes("First Name")) {
+                            candidateObj["name"] += infoSplit[1] + " ";
+                        }
+                        if (infoSplit[0].includes("Last Name")) {
+                            candidateObj["name"] += infoSplit[1];
+                        } else if (infoSplit[0].includes("Email")) {
+                            candidateObj["email"] = infoSplit[1];
+                            break
+                        }
+                    }
+
+                    candidateObj["summary"] = event.summary
+                    candidateObj["start"] = event.start
 
                     if (techs.includes(type)) {
-                        const firstName = descArr[2].split(": ")[1]
-                        const lastName = descArr[3].split(": ")[1]
-                        const email = descArr[4].split(": ")[1]
-
-                        // add 
-                        candidateObj["First"] = firstName
-                        candidateObj["Last"] = lastName
-                        candidateObj["Email"] = email
-
                         techInterviews.push(candidateObj)
                     } else if (fits.includes(type)) {
-                        const firstName = descArr[4].split(": ")[1]
-                        const lastName = descArr[5].split(": ")[1]
-                        const email = descArr[6].split(": ")[1]
-
-                        candidateObj["First"] = firstName
-                        candidateObj["Last"] = lastName
-                        candidateObj["Email"] = email
-
                         fitInterviews.push(candidateObj)
                     }
                 }
             })
 
             console.log(techInterviews);
+            techInterviews.forEach( tech => {
+                hackerRank(tech)
+            })
             console.log(fitInterviews);
 
         } else {
@@ -250,10 +261,10 @@ function myCalendars(auth) {
 
         if (res.data.items.length) {
             res.data.items.forEach(cal => {
-                if (cal.summary === "Interviews 4") { // if in the right interviews
+                // if (cal.summary === "Interviews 4") { // if in the right interviews
                     shiftEvents(auth, cal.id) // list upcoming 10 events
                     console.log(cal.id.toString() + " ~ " + cal.summary)
-                }
+                // }
             })
         } else {
             console.log("No calendars")

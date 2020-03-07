@@ -78,6 +78,12 @@ const password = require("./personal/password").hackerPassword;
     openPrompts.click();
   });
 
+  await page2.waitFor(".js-switch-library");
+  await page2.evaluate(() => {
+    let sharedWithMe = document.querySelector(".js-switch-library");
+    sharedWithMe.click()
+  })
+
   //search and select instruction from the modal
   await page2.waitFor(".close");
 
