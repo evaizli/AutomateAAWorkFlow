@@ -83,13 +83,12 @@ function myEvents(auth) {
 
     // testing
     const testStart = new Date();
-
     testStart.setDate(testStart.getDate() + 1);
 
     const hoursLater = new Date();
-    // hoursLater.setHours(hoursLater.getHours() + 3.5);
+    hoursLater.setHours(hoursLater.getHours() + 3.5);
 
-    hoursLater.setDate(hoursLater.getDate() + 3); // testing
+    // hoursLater.setDate(hoursLater.getDate() + 3); // testing
 
     calendar.events.list({
         calendarId: 'primary',
