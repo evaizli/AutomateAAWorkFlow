@@ -1,6 +1,7 @@
 const fs = require('fs');
 const readline = require('readline');
 const { google } = require('googleapis');
+const moment = require('moment');
 
 const hackerRank = require("./hackerRank");
 
@@ -68,13 +69,10 @@ function getAccessToken(oAuth2Client, callback) {
     });
 }
 
-// 1. find shifts/events from primary calendar
-// 2. find calendar from corresponding shift/interviews number
-// 3. find candidates from correct calendar and save their emails and types into an array
-// 4. based on fit/tech interview call different functions to set up
-    // - hackerRank invite for techs/bpms
-    // - zoom email invites for fits
 
+/**
+ * @param {google.auth.OAuth2} auth An authorized OAuth2 client.
+ */
 
 // find events/first shift on primary calendar
 function myEvents(auth) {
@@ -86,9 +84,9 @@ function myEvents(auth) {
     testStart.setDate(testStart.getDate() + 1);
 
     const hoursLater = new Date();
-    hoursLater.setHours(hoursLater.getHours() + 3.5);
+    // hoursLater.setHours(hoursLater.getHours() + 3.5);
 
-    // hoursLater.setDate(hoursLater.getDate() + 3); // testing
+    hoursLater.setDate(hoursLater.getDate() + 2); // testing
 
     calendar.events.list({
         calendarId: 'primary',
@@ -112,8 +110,6 @@ function myEvents(auth) {
             const shiftStart = shift.start.dateTime
             const shiftEnd = shift.end.dateTime
 
-            console.log(`${shift.summary}: Start ${shiftStart} - End ${shiftEnd}`)
-
             const calendarIds = {
                 '#1 Interviews': 'appacademy.io_s75asi05575mbos9nvofcof0f8@group.calendar.google.com',
                 '#2 Interviews': 'appacademy.io_u6go5ra311hsl7c5qr42rdjgj8@group.calendar.google.com',
@@ -127,7 +123,8 @@ function myEvents(auth) {
             // formatSummary = "#2 Interviews"
 
             if (formatSummary in calendarIds) {
-                console.log("Shift found")
+                console.log("Shift found:")
+                console.log(`${shift.summary}: ${moment(shiftStart).format('MM/DD/YY h:mma')} to ${moment(shiftEnd).format('h:mma')}`)
                 shiftEvents(auth, calendarIds[formatSummary], shiftStart, shiftEnd) // find events in corresponding shift
             } else {
                 console.log("No shifts found")
@@ -157,14 +154,16 @@ function shiftEvents(auth, calendarId, start, end) { // start, end
 
             const techInterviews = [];
             const fitInterviews = [];
+            const interviews = [];
 
             events.forEach( event => {
                 const techs = ["BPM", "T"];
                 const fits = ["Fit", "NT"];
 
                 if (event.summary.indexOf(":") > -1) { // if event is an interview
-                    const type = event.summary.slice(0, event.summary.indexOf(":")); // parse to find interview type
                     const candidateObj = {"name": ""}
+                    const type = event.summary.slice(0, event.summary.indexOf(":")); // parse to find interview type
+                    candidateObj["type"] = type;
                     const descArr = event.description.split("\n"); // parse through description for candidate info
 
                     // find first, last, email through parsing
@@ -186,18 +185,20 @@ function shiftEvents(auth, calendarId, start, end) { // start, end
                     candidateObj["start"] = event.start
 
                     if (techs.includes(type)) {
-                        techInterviews.push(candidateObj)
+                        hackerRank(candidateObj)
                     } else if (fits.includes(type)) {
-                        fitInterviews.push(candidateObj)
+                        // fitInterviews.push(candidateObj)
                     }
+
+                    interviews.push(candidateObj)
                 }
             })
 
-            console.log(techInterviews);
-            techInterviews.forEach( tech => {
-                hackerRank(tech)
-            })
-            console.log(fitInterviews);
+            console.log(interviews);
+            // techInterviews.forEach( tech => {
+            //     hackerRank(tech)
+            // })
+            // console.log(fitInterviews);
 
         } else {
             console.log('No upcoming events found.');
@@ -225,32 +226,6 @@ fs.readFile('credentials.json', (err, content) => {
 //     "Contacts": 'addressbook#contacts@group.v.calendar.google.com'
 // }
 
-/**
- * Lists the next 10 events on the user's primary calendar.
- * @param {google.auth.OAuth2} auth An authorized OAuth2 client.
- */
-function listEvents(auth) {
-    const calendar = google.calendar({ version: 'v3', auth });
-    calendar.events.list({
-        calendarId: 'primary',
-        timeMin: (new Date()).toISOString(),
-        maxResults: 10,
-        singleEvents: true,
-        orderBy: 'startTime',
-    }, (err, res) => {
-        if (err) return console.log('The API returned an error: ' + err);
-        const events = res.data.items;
-        if (events.length) {
-            console.log('Upcoming 10 events:');
-            events.map((event, i) => {
-                const start = event.start.dateTime || event.start.date;
-                console.log(`${start} - ${event.summary}`);
-            });
-        } else {
-            console.log('No upcoming events found.');
-        }
-    });
-}
 
 // Get Calendars (HiR SF, Interview 1 - 4, HiR Shifts)
 function myCalendars(auth) {

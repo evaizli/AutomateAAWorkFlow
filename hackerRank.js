@@ -103,7 +103,7 @@ module.exports = (async (candidate) => {
         sharedWithMe.click()
     })
 
-    await page2.waitFor(500);
+    await page2.waitFor(1000);
     await page2.waitFor(".close");
     
     //search and select tech instructions from the modal
@@ -113,7 +113,7 @@ module.exports = (async (candidate) => {
         let searchButton = document.querySelector(".js-search-submit");
         searchButton.click();
     })
-    await page2.waitFor(500);
+    await page2.waitFor(1000);
     await page2.waitFor(".js-use-question");
     await page2.evaluate(() => {
         let useQuestion = document.querySelector(".js-use-question");
@@ -184,12 +184,10 @@ module.exports = (async (candidate) => {
     //   sendInvite.click();
     // });
 
-    // make sure email is sent
     // await page.waitFor(".ajax-msg");
     // await page.waitFor(() =>
     //   document.querySelector(".ajax-msg").innerText.includes("Email Sent Successfully")
     // )
-
     await console.log(`HackerRank email sent to ${candidate.email}`)
 
     await browser.close()
