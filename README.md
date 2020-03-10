@@ -56,7 +56,7 @@ There are comments included in the scripts to help users understand the code and
 
 2. At the beginning of your shift, go to the root directory of this project and run `node main.js`.
 3. The script will find the first event (your shift) in your primary calendar, displaying the shift name and its start and end time in your terminal.
-4. The script will find all of the events in the corresponding interviews calendar, parsing through each of the event details and sending emails based on if they are Tech interviews (T, BPM) or Fit interviews (NT, Fit).
+4. The script will find all of the events in the corresponding interviews calendar, parsing through each of the event details and sending emails based on if they are Tech interviews (T, BPM) or Fit interviews (NT, Fit). NOTE: As of right now, the script will not send mock interview invites. 
 5. For Tech interviews, the script will open up browser(s) via Chromium that will log-in to HackerRank, fill in the meeting invite form, send the email invitation, and close the browser(s).
 6. For Fit interviews, the script will send an email with the correct link to the corresponding Zoom meeting.
 7. You will see email send confirmations for both HackerRank invitations and emails in the terminal.
