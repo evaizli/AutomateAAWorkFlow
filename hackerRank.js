@@ -3,28 +3,6 @@ const moment = require("moment");
 const email = require("./personal/password").hackerEmail;
 const password = require("./personal/password").hackerPassword;
 
-candidateArr = [
-    {
-        name: "Ernest Man",
-        email: "ernest.man10@gmail.com",
-        summary: 'T: Ernest Man',
-        start: {
-            dateTime: '2020-03-07T11:00:00-08:00',
-            timeZone: 'America/Los_Angeles'
-        }
-    },
-
-    {
-        name: "Ernie Man",
-        email: "ernest.man10@gmail.com",
-        summary: "BPM: Ernie Man",
-        start: {
-            dateTime: '2020-03-07T10:00:00-08:00',
-            timeZone: 'America/Los_Angeles'
-        }
-    }
-]
-
 // call using candidate
 module.exports = (async (candidate) => {
     const browser = await puppeteer.launch({ headless: false, defaultViewport: null });
@@ -164,8 +142,6 @@ module.exports = (async (candidate) => {
         timeElem.value = formattedTime;
     }, candidate.start);
 
-    // UNCOMMENT TO ACTIVE COMMAND. SHOULD ALWAYS DOUBLE CHECK MEETING TIME BEFORE SEND INVITE.
-
     // click save interview button and open send invite modal
     await page.click("#interview-update");
     await page.waitFor(".hr-dialog-buttons");
@@ -177,7 +153,7 @@ module.exports = (async (candidate) => {
     //   doNotSend.click();
     // });
 
-    // SEND invites to all participants
+    // // SEND invites to all participants
     // await page.evaluate(() => {
     //   const inviteButtons = document.querySelectorAll(".hr-dialog-buttons button");
     //   const sendInvite = inviteButtons[inviteButtons.length - 1];

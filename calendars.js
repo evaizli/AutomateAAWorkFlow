@@ -8,17 +8,16 @@ const hackerRank = require("./hackerRank");
  * @param {google.auth.OAuth2} auth An authorized OAuth2 client.
  */
 
-// find events/first shift on primary calendar
+// find events/first shift on primary personal calendar
 module.exports = function (auth) {
     const calendar = google.calendar({ version: 'v3', auth });
-    // gets date for 3.5 hours later to later set upper and lower bound (one shift)
 
+    // gets date for 3.5 hours later to later set upper and lower bound (one shift)
     const hoursLater = new Date();
     hoursLater.setHours(hoursLater.getHours() + 3.5);
 
     calendar.events.list({
-        calendarId: 'primary',
-        // timeMin: testStart.toISOString(),
+        calendarId: 'primary', // primary => your GSuite primary calendar
         timeMin: (new Date()).toISOString(),
         timeMax: hoursLater.toISOString(),
         maxResults: 3,
@@ -27,11 +26,9 @@ module.exports = function (auth) {
     }, (err, res) => {
         if (err) return console.log("API Error: " + err);
         const events = res.data.items;
-        if (events[0]) {
+        if (events[0]) { // grabs only one shift
             console.log("Today's Events: ")
             // function should be called before/beginning of shift
-            // function should do it for 1 shift at a time
-            // find interview number from shift summary
 
             const shift = events[0];
 
@@ -47,10 +44,12 @@ module.exports = function (auth) {
 
             let formatSummary = shift.summary.slice(0, 13) // interview title
 
+            // if you have a shift in interviews, display interviews number, shift start - shift end
             if (formatSummary in calendarIds) {
                 console.log("Shift found:")
                 console.log(`${shift.summary}: ${moment(shiftStart).format('MM/DD/YY h:mma')} to ${moment(shiftEnd).format('h:mma')}`)
-                shiftEvents(auth, calendarIds[formatSummary], shiftStart, shiftEnd, formatSummary) // find events in corresponding shift
+                // find events in corresponding interviews shift from shift start to shift end
+                shiftEvents(auth, calendarIds[formatSummary], shiftStart, shiftEnd, formatSummary) 
             } else {
                 console.log("No shifts found")
             }
@@ -89,7 +88,7 @@ function shiftEvents(auth, calendarId, start, end, interviewsNum) {
                     candidateObj["type"] = type;
                     const descArr = event.description.split("\n"); // parse through description for candidate info
 
-                    // find first, last, email through parsing
+                    // find first, last, email through parsing and save to candidateObj
                     for (let i = 0; i < descArr.length; i++) {
                         let info = descArr[i];
                         let infoSplit = info.split(": ");
@@ -108,13 +107,16 @@ function shiftEvents(auth, calendarId, start, end, interviewsNum) {
                     candidateObj["start"] = event.start
 
                     if (techs.includes(type)) {
+                        // call hackerRank function for all Tech candidates
                         hackerRank(candidateObj)
                     } else if (fits.includes(type)) {
+                        // call sendFitEmail function for all Fit interviews
                         sendFitEmail(auth, testCandidate, interviewsNum)
                     }
                     interviews.push(candidateObj)
                 }
             })
+            // show all interviews for current shift
             console.log(interviews);
         } else {
             console.log('No upcoming events found.');
@@ -130,8 +132,7 @@ function myCalendars(auth) {
 
         if (res.data.items.length) {
             res.data.items.forEach(cal => {
-                // if (cal.summary === "Interviews 4") { // if in the right interviews
-                    shiftEvents(auth, cal.id) // list upcoming 10 events
+                shiftEvents(auth, cal.id) // list upcoming 10 events
                     console.log(cal.id.toString() + " ~ " + cal.summary)
                 // }
             })
@@ -144,7 +145,7 @@ function myCalendars(auth) {
 // const calendarIDs = {
 //     'HiR Shifts': 'appacademy.io_0o8bepl91hetc3nj3nl6sbnfl8@group.calendar.google.com',
 //     'Interviews 2': 'appacademy.io_u6go5ra311hsl7c5qr42rdjgj8@group.calendar.google.com',
-//     'HiR SF: Ernie Man': 'eman@appacademy.io',
+//     'HiR SF: Ernie Man': 'eman@appacademy.io', (Primary)
 //     'Interviews 4': 'appacademy.io_b52b6k1dclpi8o3bq8jo1bbq70@group.calendar.google.com',
 //     'Interviews 1': 'appacademy.io_s75asi05575mbos9nvofcof0f8@group.calendar.google.com',
 //     'Interviews 3': 'appacademy.io_2idda72dasldk0dfn9ak1vfb0o@group.calendar.google.com',
