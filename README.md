@@ -26,9 +26,10 @@ There are comments included in the scripts to help users understand the code and
     };
    ```
 
+
 ### First time set-up and authorization:
 
-1. In command line, go to the root directory of this project and run `node main.js`
+1. At the beginning of your shift, go to the root directory of this project and run `node main.js` in command-line.
 2. The first time you run the script, it will prompt you to authorize access:
    a. Go to the provided URL in your web browse. NOTE: it may say "This app isn't verified". You can ignore that and click "Go to QuickStart" at the very bottom. 
    b. You will be prompted to log in to you Google account. Here is where you will sign in using your Hacker Google Suite account and grant permission to view your Calendars and send Emails, granting authorization via OAuth2 by clicking the Allow button.
@@ -36,24 +37,24 @@ There are comments included in the scripts to help users understand the code and
 3. This will create a `token.json` file within the root directory that hold your credentials giving you authorization to view Calendars and send Emails. The `token.json` file has already included in `.gitignore`. NOTE: tokens expire, so you will have to log in and grant permission again once the token expires.
 
 ### Run main.js Script Steps:
+#### ATTENTION: only run the main.js script at the beginning of your shift. The script is written to handle one shift event
 
-1. Open the `hackerRank.js` file and uncomment the code at the bottom to automate the sending of HackerRank CodePair Emails.
+1. Open the `calendars.js` file and uncomment the `hackerRank` and `sendFitEmail` invocations to allow the script to set up HackerRank and send Fit emails:
 
    ```javascript
-   // SEND invites to all participants
-      await page.evaluate(() => {
-      const inviteButtons = document.querySelectorAll(".hr-dialog-buttons button");
-      const sendInvite = inviteButtons[inviteButtons.length - 1];
-      sendInvite.click();
-    });
+   if (techs.includes(type)) {
+      // UNCOMMENT call hackerRank function for all Tech candidates
 
-    await page.waitFor(".ajax-msg");
-    await page.waitFor(() =>
-      document.querySelector(".ajax-msg").innerText.includes("Email Sent Successfully")
-    )
+      // hackerRank(candidateObj)
+   } else if (fits.includes(type)) {
+      // UNCOMMENT call sendFitEmail function for all Fit interviews
+
+      // sendFitEmail(auth, testCandidate, interviewsNum)
+   }    
    ```
 
-2. At the beginning of your shift, go to the root directory of this project and run `node main.js`
+
+2. At the beginning of your shift, go to the root directory of this project and run `node main.js`.
 3. The script will find the first event (your shift) in your primary calendar, displaying the shift name and its start and end time in your terminal.
 4. The script will find all of the events in the corresponding interviews calendar, parsing through each of the event details and sending emails based on if they are Tech interviews (T, BPM) or Fit interviews (NT, Fit).
 5. For Tech interviews, the script will open up browser(s) via Chromium that will log-in to HackerRank, fill in the meeting invite form, send the email invitation, and close the browser(s).
@@ -62,4 +63,4 @@ There are comments included in the scripts to help users understand the code and
 
 ### Notes for Future Improvement
 
-1. Integrate the script into App Academy Portal
+1. Integrate the script into App Academy Portal.

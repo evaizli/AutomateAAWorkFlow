@@ -153,17 +153,17 @@ module.exports = (async (candidate) => {
     // });
 
     // // SEND invites to all participants
-    // await page.evaluate(() => {
-    //   const inviteButtons = document.querySelectorAll(".hr-dialog-buttons button");
-    //   const sendInvite = inviteButtons[inviteButtons.length - 1];
-    //   sendInvite.click();
-    // });
+    await page.evaluate(() => {
+      const inviteButtons = document.querySelectorAll(".hr-dialog-buttons button");
+      const sendInvite = inviteButtons[inviteButtons.length - 1];
+      sendInvite.click();
+    });
 
-    // await page.waitFor(".ajax-msg");
-    // await page.waitFor(() =>
-    //   document.querySelector(".ajax-msg").innerText.includes("Email Sent Successfully")
-    // )
+    await page.waitFor(".ajax-msg");
+    await page.waitFor(() =>
+      document.querySelector(".ajax-msg").innerText.includes("Email Sent Successfully")
+    )
     await console.log(`HackerRank email sent to ${candidate.email}`)
-    
+
     await browser.close()
 });

@@ -8,7 +8,7 @@ const hackerRank = require("./hackerRank");
  * @param {google.auth.OAuth2} auth An authorized OAuth2 client.
  */
 
- 
+
 // find events/first shift on primary personal calendar
 module.exports = function (auth) {
     const calendar = google.calendar({ version: 'v3', auth });
@@ -108,11 +108,13 @@ function shiftEvents(auth, calendarId, start, end, interviewsNum) {
                     candidateObj["start"] = event.start
 
                     if (techs.includes(type)) {
-                        // call hackerRank function for all Tech candidates
-                        hackerRank(candidateObj)
+                        // UNCOMMENT call hackerRank function for all Tech candidates
+
+                        // hackerRank(candidateObj)
                     } else if (fits.includes(type)) {
-                        // call sendFitEmail function for all Fit interviews
-                        sendFitEmail(auth, testCandidate, interviewsNum)
+                        // UNCOMMENT call sendFitEmail function for all Fit interviews
+
+                        // sendFitEmail(auth, testCandidate, interviewsNum)
                     }
                     interviews.push(candidateObj)
                 }
