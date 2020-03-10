@@ -84,37 +84,46 @@ function shiftEvents(auth, calendarId, start, end, interviewsNum) {
                 const fits = ["Fit", "NT"];
 
                 if (event.summary.indexOf(":") > -1) { // if event is an interview
-                    const candidateObj = {"name": ""}
+
+                    const candidateObj = {}
                     const type = event.summary.slice(0, event.summary.indexOf(":")); // parse to find interview type
                     candidateObj["type"] = type;
-                    const descArr = event.description.split("\n"); // parse through description for candidate info
 
-                    // find first, last, email through parsing and save to candidateObj
-                    for (let i = 0; i < descArr.length; i++) {
-                        let info = descArr[i];
-                        let infoSplit = info.split(": ");
-                        if (infoSplit[0].includes("First Name")) {
-                            candidateObj["name"] += infoSplit[1] + " ";
+                    if (event.summary.includes("Mock")) { // for mock interviews, only display summary and start date 
+                        const attendees = event.attendees.map( att => att.email)
+                        candidateObj["attendees"] = attendees
+                        candidateObj["summary"] = `${event.summary}: ${moment(event.start.dateTime).tz(event.start.timeZone).format('MM/DD/YY h:mma z')}`;
+                    } else {
+                        candidateObj["name"] = ""
+                        const descArr = event.description.split("\n"); // parse through description for candidate info
+    
+                        // find first, last, email through parsing and save to candidateObj
+                        for (let i = 0; i < descArr.length; i++) {
+                            let info = descArr[i];
+                            let infoSplit = info.split(": ");
+                            if (infoSplit[0].includes("First Name")) {
+                                candidateObj["name"] += infoSplit[1] + " ";
+                            }
+                            if (infoSplit[0].includes("Last Name")) {
+                                candidateObj["name"] += infoSplit[1];
+                            } else if (infoSplit[0].includes("Email")) {
+                                candidateObj["email"] = infoSplit[1];
+                                break
+                            }
                         }
-                        if (infoSplit[0].includes("Last Name")) {
-                            candidateObj["name"] += infoSplit[1];
-                        } else if (infoSplit[0].includes("Email")) {
-                            candidateObj["email"] = infoSplit[1];
-                            break
+    
+                        candidateObj["summary"] = event.summary
+                        candidateObj["start"] = event.start
+    
+                        if (techs.includes(type)) {
+                            // UNCOMMENT call hackerRank function for all Tech candidates
+    
+                            // hackerRank(candidateObj)
+                        } else if (fits.includes(type)) {
+                            // UNCOMMENT call sendFitEmail function for all Fit interviews
+    
+                            // sendFitEmail(auth, testCandidate, interviewsNum)
                         }
-                    }
-
-                    candidateObj["summary"] = event.summary
-                    candidateObj["start"] = event.start
-
-                    if (techs.includes(type)) {
-                        // UNCOMMENT call hackerRank function for all Tech candidates
-
-                        // hackerRank(candidateObj)
-                    } else if (fits.includes(type)) {
-                        // UNCOMMENT call sendFitEmail function for all Fit interviews
-
-                        // sendFitEmail(auth, testCandidate, interviewsNum)
                     }
                     interviews.push(candidateObj)
                 }
