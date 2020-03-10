@@ -1,92 +1,20 @@
-const fs = require('fs');
-const readline = require('readline');
 const { google } = require('googleapis');
-const moment = require('moment');
+const moment = require("moment-timezone");
 
+const sendFitEmail = require("./email");
 const hackerRank = require("./hackerRank");
-
-// If modifying these scopes, delete token.json.
-const SCOPES = ['https://www.googleapis.com/auth/calendar.readonly'];
-// The file token.json stores the user's access and refresh tokens, and is
-// created automatically when the authorization flow completes for the first
-// time.
-const TOKEN_PATH = 'token.json';
-
-// Load client secrets from a local file.
-// fs.readFile('credentials.json', (err, content) => {
-//     if (err) return console.log('Error loading client secret file:', err);
-    // Authorize a client with credentials, then call the Google Calendar API.
-    // authorize(JSON.parse(content), listEvents);
-// });
-
-/**
- * Create an OAuth2 client with the given credentials, and then execute the
- * given callback function.
- * @param {Object} credentials The authorization client credentials.
- * @param {function} callback The callback to call with the authorized client.
- */
-function authorize(credentials, callback) {
-    const { client_secret, client_id, redirect_uris } = credentials.installed;
-    const oAuth2Client = new google.auth.OAuth2(
-        client_id, client_secret, redirect_uris[0]);
-
-    // Check if we have previously stored a token.
-    fs.readFile(TOKEN_PATH, (err, token) => {
-        if (err) return getAccessToken(oAuth2Client, callback);
-        oAuth2Client.setCredentials(JSON.parse(token));
-        callback(oAuth2Client);
-    });
-}
-
-/**
- * Get and store new token after prompting for user authorization, and then
- * execute the given callback with the authorized OAuth2 client.
- * @param {google.auth.OAuth2} oAuth2Client The OAuth2 client to get token for.
- * @param {getEventsCallback} callback The callback for the authorized client.
- */
-function getAccessToken(oAuth2Client, callback) {
-    const authUrl = oAuth2Client.generateAuthUrl({
-        access_type: 'offline',
-        scope: SCOPES,
-    });
-    console.log('Authorize this app by visiting this url:', authUrl);
-    const rl = readline.createInterface({
-        input: process.stdin,
-        output: process.stdout,
-    });
-    rl.question('Enter the code from that page here: ', (code) => {
-        rl.close();
-        oAuth2Client.getToken(code, (err, token) => {
-            if (err) return console.error('Error retrieving access token', err);
-            oAuth2Client.setCredentials(token);
-            // Store the token to disk for later program executions
-            fs.writeFile(TOKEN_PATH, JSON.stringify(token), (err) => {
-                if (err) return console.error(err);
-                console.log('Token stored to', TOKEN_PATH);
-            });
-            callback(oAuth2Client);
-        });
-    });
-}
-
 
 /**
  * @param {google.auth.OAuth2} auth An authorized OAuth2 client.
  */
 
 // find events/first shift on primary calendar
-function myEvents(auth) {
+module.exports = function (auth) {
     const calendar = google.calendar({ version: 'v3', auth });
     // gets date for 3.5 hours later to later set upper and lower bound (one shift)
 
-    // testing
-    const testStart = new Date();
-    testStart.setDate(testStart.getDate() + 1);
-
     const hoursLater = new Date();
-    // hoursLater.setHours(hoursLater.getHours() + 3.5);
-
-    hoursLater.setDate(hoursLater.getDate() + 2); // testing
+    hoursLater.setHours(hoursLater.getHours() + 3.5);
 
     calendar.events.list({
         calendarId: 'primary',
@@ -119,13 +47,10 @@ function myEvents(auth) {
 
             let formatSummary = shift.summary.slice(0, 13) // interview title
 
-            // testing
-            // formatSummary = "#2 Interviews"
-
             if (formatSummary in calendarIds) {
                 console.log("Shift found:")
                 console.log(`${shift.summary}: ${moment(shiftStart).format('MM/DD/YY h:mma')} to ${moment(shiftEnd).format('h:mma')}`)
-                shiftEvents(auth, calendarIds[formatSummary], shiftStart, shiftEnd) // find events in corresponding shift
+                shiftEvents(auth, calendarIds[formatSummary], shiftStart, shiftEnd, formatSummary) // find events in corresponding shift
             } else {
                 console.log("No shifts found")
             }
@@ -137,7 +62,7 @@ function myEvents(auth) {
 
 
 // find events for the corresponding shift
-function shiftEvents(auth, calendarId, start, end) { // start, end
+function shiftEvents(auth, calendarId, start, end, interviewsNum) {
     const calendar = google.calendar({ version: 'v3', auth });
     calendar.events.list({
         calendarId: calendarId,
@@ -152,8 +77,6 @@ function shiftEvents(auth, calendarId, start, end) { // start, end
         if (events.length) {
             console.log('Upcoming shift events:');
 
-            const techInterviews = [];
-            const fitInterviews = [];
             const interviews = [];
 
             events.forEach( event => {
@@ -187,45 +110,17 @@ function shiftEvents(auth, calendarId, start, end) { // start, end
                     if (techs.includes(type)) {
                         hackerRank(candidateObj)
                     } else if (fits.includes(type)) {
-                        // fitInterviews.push(candidateObj)
+                        sendFitEmail(auth, testCandidate, interviewsNum)
                     }
-
                     interviews.push(candidateObj)
                 }
             })
-
             console.log(interviews);
-            // techInterviews.forEach( tech => {
-            //     hackerRank(tech)
-            // })
-            // console.log(fitInterviews);
-
         } else {
             console.log('No upcoming events found.');
         }
     });
 }
-
-
-// Load client secrets from a local file.
-fs.readFile('credentials.json', (err, content) => {
-    if (err) return console.log('Error loading client secret file:', err);
-    // Authorize a client with credentials, then call the Google Calendar API.
-
-    authorize(JSON.parse(content), myEvents);
-    // authorize(JSON.parse(content), myCalendars);
-});
-
-// const ids = {
-//     'HiR Shifts': 'appacademy.io_0o8bepl91hetc3nj3nl6sbnfl8@group.calendar.google.com',
-//     'Interviews 2': 'appacademy.io_u6go5ra311hsl7c5qr42rdjgj8@group.calendar.google.com',
-//     'HiR SF: Ernie Man': 'eman@appacademy.io',
-//     'Interviews 4': 'appacademy.io_b52b6k1dclpi8o3bq8jo1bbq70@group.calendar.google.com',
-//     'Interviews 1': 'appacademy.io_s75asi05575mbos9nvofcof0f8@group.calendar.google.com',
-//     'Interviews 3': 'appacademy.io_2idda72dasldk0dfn9ak1vfb0o@group.calendar.google.com',
-//     "Contacts": 'addressbook#contacts@group.v.calendar.google.com'
-// }
-
 
 // Get Calendars (HiR SF, Interview 1 - 4, HiR Shifts)
 function myCalendars(auth) {
@@ -245,3 +140,13 @@ function myCalendars(auth) {
         }
     });
 }
+
+// const calendarIDs = {
+//     'HiR Shifts': 'appacademy.io_0o8bepl91hetc3nj3nl6sbnfl8@group.calendar.google.com',
+//     'Interviews 2': 'appacademy.io_u6go5ra311hsl7c5qr42rdjgj8@group.calendar.google.com',
+//     'HiR SF: Ernie Man': 'eman@appacademy.io',
+//     'Interviews 4': 'appacademy.io_b52b6k1dclpi8o3bq8jo1bbq70@group.calendar.google.com',
+//     'Interviews 1': 'appacademy.io_s75asi05575mbos9nvofcof0f8@group.calendar.google.com',
+//     'Interviews 3': 'appacademy.io_2idda72dasldk0dfn9ak1vfb0o@group.calendar.google.com',
+//     "Contacts": 'addressbook#contacts@group.v.calendar.google.com'
+// }
