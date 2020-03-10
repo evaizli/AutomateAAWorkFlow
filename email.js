@@ -5,9 +5,9 @@ const {google} = require("googleapis")
 const MIMEText = require("mimetext");
 const moment = require("moment-timezone");
 
-function emailTemplate(candidate, interviewsNum) {
 
-    // we need MIMEText to convert the email message into base64 encoded RFC 2822 format for the gmail API
+// we need MIMEText to convert the email message into base64 encoded RFC 2822 format for the gmail API
+function emailTemplate(candidate, interviewsNum) {
     const message = new MIMEText();
 
     // setting up the email template
@@ -19,7 +19,7 @@ function emailTemplate(candidate, interviewsNum) {
     }
 
     const formattedDate = moment(candidate.start.dateTime).tz(candidate.start.timeZone).format("MM/DD/YY h:mma z")
-    
+
     const body = `
     Hi ${candidate.name.split(" ")[0]},\n
     Your App Academy interview is scheduled for ${formattedDate}.\n
@@ -42,6 +42,7 @@ function emailTemplate(candidate, interviewsNum) {
     return message.asEncoded()
 }
 
+// Gmail API call
 module.exports = function (auth, candidate, interviewsNum) {
     const gmail = google.gmail({ version: 'v1', auth });
 

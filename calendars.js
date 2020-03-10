@@ -8,6 +8,7 @@ const hackerRank = require("./hackerRank");
  * @param {google.auth.OAuth2} auth An authorized OAuth2 client.
  */
 
+ 
 // find events/first shift on primary personal calendar
 module.exports = function (auth) {
     const calendar = google.calendar({ version: 'v3', auth });

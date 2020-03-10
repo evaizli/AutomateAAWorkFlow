@@ -102,7 +102,6 @@ module.exports = (async (candidate) => {
     await page2.waitFor(() =>
         document.querySelector(".cp_questionWrap").innerText.includes("Technical Interview")
     )
-
     await page2.waitFor(500)
     await page2.close();
 
@@ -165,6 +164,6 @@ module.exports = (async (candidate) => {
     //   document.querySelector(".ajax-msg").innerText.includes("Email Sent Successfully")
     // )
     await console.log(`HackerRank email sent to ${candidate.email}`)
-
+    
     await browser.close()
 });
