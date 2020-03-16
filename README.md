@@ -49,7 +49,7 @@ There are comments included in the scripts to help users understand the code and
    } else if (fits.includes(type)) {
       // UNCOMMENT call sendFitEmail function for all Fit interviews
 
-      // sendFitEmail(auth, testCandidate, interviewsNum)
+      // sendFitEmail(auth, candidateObj, interviewsNum)
    }    
    ```
 
