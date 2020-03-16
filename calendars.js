@@ -122,7 +122,7 @@ function shiftEvents(auth, calendarId, start, end, interviewsNum) {
                         } else if (fits.includes(type)) {
                             // UNCOMMENT call sendFitEmail function for all Fit interviews
     
-                            // sendFitEmail(auth, testCandidate, interviewsNum)
+                            // sendFitEmail(auth, candidateObj, interviewsNum)
                         }
                     }
                     interviews.push(candidateObj)
