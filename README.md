@@ -63,5 +63,6 @@ There are comments included in the scripts to help users understand the code and
 
 ### Notes for Future Improvement
 
-1. Integrate the script into App Academy Portal.
-2. Add logic for setting up Mock Interviews
+1. Utilize HackerRank Work API
+2. Integrate the script into App Academy Portal
+3. Add logic for setting up Mock Interviews
