@@ -2,7 +2,10 @@ const { google } = require('googleapis');
 const moment = require("moment-timezone");
 
 const sendFitEmail = require("./email");
-const hackerRank = require("./hackerRank");
+const hackerRankAPI = require("./hackerRankAPI");
+
+// function for importing tech instructions
+const importInstructions = require("./instructions");
 
 /**
  * @param {google.auth.OAuth2} auth An authorized OAuth2 client.
@@ -15,7 +18,9 @@ module.exports = function (auth) {
 
     // gets date for 3.5 hours later to later set upper and lower bound (one shift)
     const hoursLater = new Date();
-    hoursLater.setHours(hoursLater.getHours() + 3.5);
+    // hoursLater.setHours(hoursLater.getHours() + 3.5);
+
+    hoursLater.setHours(hoursLater.getHours() + 24)
 
     calendar.events.list({
         calendarId: 'primary', // primary => your GSuite primary calendar
@@ -118,7 +123,7 @@ function shiftEvents(auth, calendarId, start, end, interviewsNum) {
                         if (techs.includes(type)) {
                             // UNCOMMENT call hackerRank function for all Tech candidates
     
-                            // hackerRank(candidateObj)
+                            // hackerRankAPI(candidateObj, importInstructions)
                         } else if (fits.includes(type)) {
                             // UNCOMMENT call sendFitEmail function for all Fit interviews
     
