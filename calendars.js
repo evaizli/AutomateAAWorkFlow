@@ -18,7 +18,9 @@ module.exports = function (auth) {
 
     // gets date for 3.5 hours later to later set upper and lower bound (one shift)
     const hoursLater = new Date();
-    hoursLater.setHours(hoursLater.getHours() + 3.5);
+    // hoursLater.setHours(hoursLater.getHours() + 3.5);
+
+    hoursLater.setHours(hoursLater.getHours() + 24)
 
     calendar.events.list({
         calendarId: 'primary', // primary => your GSuite primary calendar

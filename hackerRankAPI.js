@@ -9,12 +9,12 @@ const hackerRankConfig = {
 };
 
 module.exports = (candidate, callback) => {
-    const hourLater = new Date(candidate.start)
+    const hourLater = new Date(candidate.start.dateTime)
     hourLater.setHours(hourLater.getHours() + 1)
 
     // body for creating new CodePair
     const requestBody = {
-        from: candidate.start,
+        from: candidate.start.dateTime,
         to: hourLater,
         title: candidate.summary,
         interviewers: [{ email: hackerEmail, name: hackerName }],
@@ -36,6 +36,6 @@ module.exports = (candidate, callback) => {
             callback(res.data) // for calling instructions import puppeteer script
         }
     ).catch(
-        err => console.log(err)
+        err => console.log(err.response)
     )
 }
