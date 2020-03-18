@@ -1,6 +1,6 @@
 ### Description:
 
-The purpose of this project is to use Google Calendar API, Gmail API, and Puppeteer API to automate the administrative work of setting up HackerRank and Zoom meeting invitations.
+The purpose of this project is to use Google Calendar API, Gmail API, HackerRank API, and Puppeteer API to automate the administrative work of setting up HackerRank and Zoom meeting invitations.
 
 There are comments included in the scripts to help users understand the code and for future debugging purposes. Users are encourged to review the code before running the scripts because minor edits will be needed to personalize the meeting invite and set meeting time. The steps to setup and run the scripts are outlined below.
 
@@ -8,6 +8,7 @@ There are comments included in the scripts to help users understand the code and
 
 - Google Calendar API
 - Gmail API
+- HackerRank Work API
 - Puppeteer
 
 ### Setup Steps:
@@ -17,12 +18,16 @@ There are comments included in the scripts to help users understand the code and
 3. Create a /personal folder within the root folder for private information like email, password, and name. This email and password will be your login information for HackerRank. You will login to your GSuite account through OAuth2. 
 4. Create a `password.js` file within the personal folder. Before entering your private information, please make sure the `password.js` files is included in the `.gitignore` file. Should always double check to avoid credentials being pushed out in public.
 5. In the `password.js` add your Hacker email and password (feel free to change the naming convention but please remember to update the required file path name).
+6. Log in to HackerRank for Work. At the top right, click your account icon > Settings > My API Tokens > Generate New Token. You can name it whatever you like. This token will allow you to access the HackerRank API and create CodePairs. Add the API Key to your password.js file.
+
+- An example of your `password.js` file:
 
    ```javascript
    module.exports = {
         hackerEmail: "eman@appacademy.io",
-        hackerPassword: "password",
-        hackerName: "Ernie Man"
+        hackerPassword: "your_password",
+        hackerName: "Ernie Man",
+        hackerRankAPIKey: "your_key"
     };
    ```
 
@@ -44,11 +49,11 @@ There are comments included in the scripts to help users understand the code and
    ```javascript
    if (techs.includes(type)) {
       // UNCOMMENT call hackerRank function for all Tech candidates
-
-      // hackerRank(candidateObj)
+    
+      // hackerRankAPI(candidateObj, importInstructions)
    } else if (fits.includes(type)) {
       // UNCOMMENT call sendFitEmail function for all Fit interviews
-
+    
       // sendFitEmail(auth, candidateObj, interviewsNum)
    }    
    ```
@@ -63,6 +68,5 @@ There are comments included in the scripts to help users understand the code and
 
 ### Notes for Future Improvement
 
-1. Utilize HackerRank Work API
-2. Integrate the script into App Academy Portal
-3. Add logic for setting up Mock Interviews
+1. Integrate the script into App Academy Portal
+2. Add logic for setting up Mock Interviews
