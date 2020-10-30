@@ -4,9 +4,6 @@ const moment = require("moment-timezone");
 const sendFitEmail = require("./email");
 const hackerRankAPI = require("./hackerRankAPI");
 
-// function for importing tech instructions
-const importInstructions = require("./instructions");
-
 /**
  * @param {google.auth.OAuth2} auth An authorized OAuth2 client.
  */
@@ -120,12 +117,13 @@ function shiftEvents(auth, calendarId, start, end, interviewsNum) {
     
                         if (techs.includes(type)) {
                             // UNCOMMENT call hackerRank function for all Tech candidates
-    
-                            // hackerRankAPI(candidateObj, importInstructions)
+
+                            hackerRankAPI(candidateObj)
+
                         } else if (fits.includes(type)) {
                             // UNCOMMENT call sendFitEmail function for all Fit interviews
     
-                            // sendFitEmail(auth, candidateObj, interviewsNum)
+                            sendFitEmail(auth, candidateObj, interviewsNum)
                         }
                     }
                     interviews.push(candidateObj)
