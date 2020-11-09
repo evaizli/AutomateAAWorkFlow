@@ -80,7 +80,7 @@ function shiftEvents(auth, calendarId, start, end, interviewsNum) {
             const interviews = [];
 
             events.forEach( event => {
-                const techs = ["BPM", "T", "RT"];
+                const techs = ["BPM", "T", "RT", "JS Mock"];
                 const fits = ["Fit", "NT"];
 
                 if (event.summary.indexOf(":") > -1) { // if event is an interview
